@@ -45,9 +45,6 @@ const AccountDetailHeader = ({ accountInfo, onDeactivate, onActivate, onEdit, is
           </div>
           <Text type="secondary" className={styles.subtitle}>
             {accountInfo.nric}
-            {accountInfo.educationAccountUserName && (
-              <> • {accountInfo.educationAccountUserName}</>
-            )}
           </Text>
         </div>
       </div>

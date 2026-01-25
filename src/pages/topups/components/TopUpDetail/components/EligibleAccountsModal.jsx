@@ -4,9 +4,10 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useAffectedAccounts } from "../../../../../hooks/topups/useAffectedAccounts";
 import { useDebounce } from "../../../../../hooks/useDebounce";
 import { formatNumberWithCommas } from "../../../../../utils/formatters";
+import { getEducationLevelLabel, getSchoolingStatusLabel } from "../../../../../constants/educationMappings";
 import modalStyles from "./EligibleAccountsModal.module.scss";
 
-const EligibleAccountsModal = ({ data, onClose, onCancelTopUp }) => {
+const EligibleAccountsModal = ({ data, onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
   
   // Debounce search term to avoid too many API calls
@@ -19,9 +20,6 @@ const EligibleAccountsModal = ({ data, onClose, onCancelTopUp }) => {
   const totalAccounts = affectedData?.totalAccounts || 0;
   const amountPerAccount = affectedData?.amountPerAccount || 0;
   const totalDisbursement = affectedData?.totalDisbursement || 0;
-
-  // Check if top-up is completed (status === 2)
-  const isCompleted = data?.status === 2;
 
   return (
     <Modal
@@ -99,7 +97,7 @@ const EligibleAccountsModal = ({ data, onClose, onCancelTopUp }) => {
                   <span className={modalStyles.balance}>
                     Current Balance
                     <br />
-                    <strong>S${formatNumberWithCommas(account.oldBalance, 0)}</strong>
+                    <strong>S${formatNumberWithCommas(account.currentBalance, 0)}</strong>
                   </span>
                 </div>
 
@@ -115,13 +113,13 @@ const EligibleAccountsModal = ({ data, onClose, onCancelTopUp }) => {
                       Education Level:
                     </span>
                     <span className={modalStyles.detailValue}>
-                      {account.educationLevel || "-"}
+                      {getEducationLevelLabel(account.educationLevel)}
                     </span>
                   </div>
                   <div className={modalStyles.detailRow}>
                     <span className={modalStyles.detailLabel}>Schooling Status:</span>
                     <span className={modalStyles.detailValue}>
-                      {account.schoolingStatus || "-"}
+                      {getSchoolingStatusLabel(account.schoolingStatus)}
                     </span>
                   </div>
                 </div>
@@ -151,17 +149,6 @@ const EligibleAccountsModal = ({ data, onClose, onCancelTopUp }) => {
 
       {/* Footer */}
       <div className={modalStyles.footer}>
-        {!isCompleted && onCancelTopUp && (
-          <Button 
-            danger 
-            onClick={() => {
-              onCancelTopUp(data, totalAccounts);
-            }}
-            className={modalStyles.cancelBtn}
-          >
-            Cancel Top Up
-          </Button>
-        )}
         <Button onClick={onClose} type="primary">
           Close
         </Button>

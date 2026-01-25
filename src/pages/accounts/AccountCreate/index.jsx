@@ -105,9 +105,10 @@ const AccountCreate = ({ open, onClose }) => {
       handleReset();
       onClose?.();
     } catch (err) {
+      console.log("Error:", err);
       notification.error({
         title: "Add new Account fail!",
-        description: err.message,
+        description: err.response?.data?.errorMessage || err?.errorMessage || err?.message || "An error occurred while creating the account",
         placement: "topRight",
         duration: 8,
       });
@@ -168,7 +169,12 @@ const AccountCreate = ({ open, onClose }) => {
           </Col>
 
           <Col span={12}>
-            <Form.Item label="Full Name" name="fullName">
+            <Form.Item 
+              label="Full Name" 
+              name="fullName"
+              rules={[{ required: true, message: "Please input name" }]}
+              required
+            >
               <Input
                 placeholder="Auto-filled from NRIC/FIN"
                 disabled={true}
@@ -181,7 +187,12 @@ const AccountCreate = ({ open, onClose }) => {
         {/* Hàng 2: DOB và Email */}
         <Row gutter={20}>
           <Col span={12}>
-            <Form.Item label="Date of Birth" name="dob">
+            <Form.Item 
+              label="Date of Birth" 
+              name="dob"
+              rules={[{ required: true, message: "Please input date of birth" }]}
+              required
+            >
               <DatePicker
                 style={{ width: "100%" }}
                 placeholder="DD/MM/YYYY"
@@ -199,8 +210,10 @@ const AccountCreate = ({ open, onClose }) => {
               name="email"
               rules={[
                 { required: true, message: "Email is required" },
-                { type: 'email', message: "Invalid email" }
+                { type: 'email', message: "Invalid email" },
+                { pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Please enter a valid email with full domain (e.g., user@example.com)" }
               ]}
+              required
             >
               <Input
                 placeholder="email@example.com"
@@ -217,8 +230,10 @@ const AccountCreate = ({ open, onClose }) => {
               label="Phone Number" 
               name="phone"
               rules={[
+                { required: true, message: "Please input phone number!" },
                 { pattern: /^[689]\d{7}$/, message: "Please enter valid 8-digit number starting with 6, 8, or 9" }
               ]}
+              required
             >
               <Input
                 addonBefore="+65"
@@ -228,7 +243,12 @@ const AccountCreate = ({ open, onClose }) => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Residential Status" name="residentialStatus">
+            <Form.Item 
+              label="Residential Status" 
+              name="residentialStatus"
+              rules={[{ required: true, message: "Please input residential status!" }]}
+              required
+            >
               <Input
                 placeholder="Auto-filled status"
                 disabled={true}
@@ -239,7 +259,12 @@ const AccountCreate = ({ open, onClose }) => {
         </Row>
 
         {/* Registered Address */}
-        <Form.Item label="Registered Address" name="registeredAddress">
+        <Form.Item 
+          label="Registered Address" 
+          name="registeredAddress"
+          rules={[{ required: true, message: "Please input registered address!" }]}
+          required
+        >
           <Input
             placeholder="Auto-filled from NRIC"
             disabled={!isVerify}
@@ -253,6 +278,7 @@ const AccountCreate = ({ open, onClose }) => {
           rules={[
             isVerify && { required: true, message: "Please input mailing address!" },
           ].filter(Boolean)}
+          required
         >
           <Input
             placeholder="Auto-filled same as Registered Address"

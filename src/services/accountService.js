@@ -73,8 +73,8 @@ export const accountService = {
       console.log(error);
       throw {
         source: "API",
-        message:
-          error.response?.data?.message || "API  add new account failed",
+        message: error.response?.data?.message || "API add new account failed",
+        errorMessage: error.response?.data?.errorMessage || error.response?.data?.message || "API add new account failed",
         status: error.response?.status,
         raw: error,
       };

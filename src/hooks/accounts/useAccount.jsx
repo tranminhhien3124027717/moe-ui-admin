@@ -36,6 +36,7 @@ export const useAccounts = () => {
       return res;
     } catch (err) {
       setError(err);
+      throw err;
     } finally {
       setLoading(false);
     }

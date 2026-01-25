@@ -1,26 +1,18 @@
 import React, { useState } from "react";
-import { Modal, Button, Divider, Tag } from "antd";
+import { Modal, Button, Divider, Tag, Tooltip } from "antd";
 import EligibleAccountsModal from "./components/EligibleAccountsModal";
 import CancelTopUpModal from "./components/CancelTopUpModal";
 import styles from "./TopUpDetail.module.scss";
 import dayjs from "dayjs";
-import { formatNumberWithCommas } from "../../../../utils/formatters";
+import { formatNumberWithCommas, formatStatus } from "../../../../utils/formatters";
 
 const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
   const [showEligibleAccounts, setShowEligibleAccounts] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
-  const [eligibleCountForCancel, setEligibleCountForCancel] = useState(0);
   
   if (!data) return null;
   
   console.log(data.status, typeof data.status);
-
-  // Handler to open cancel modal from EligibleAccountsModal
-  const handleOpenCancelFromEligible = (topUpData, eligibleCount) => {
-    setEligibleCountForCancel(eligibleCount);
-    setShowEligibleAccounts(false);
-    setShowCancelConfirm(true);
-  };
 
   const getStatusColor = (status) => {
     const statusMap = {
@@ -40,10 +32,16 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
     return statusMap[status] || "Unknown";
   };
 
+  // Get targeting type label
+  const getTargetingTypeLabel = () => {
+    if (!data.topupRules) return "-";
+    return data.topupRules.targetingType === 1 ? "Customized Criteria" : "All Education Account";
+  };
+
   // Format age range
   const getAgeRange = () => {
-    if (!data.criteria) return "-";
-    const { minAge, maxAge } = data.criteria;
+    if (!data.topupRules) return "-";
+    const { minAge, maxAge } = data.topupRules;
     if (!minAge && !maxAge) return "-";
     if (minAge === maxAge) {
       return `${maxAge} years`;
@@ -55,27 +53,56 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
 
   // Format balance range
   const getBalanceRange = () => {
-    if (!data.criteria) return "-";
-    const { minBalance, maxBalance } = data.criteria;
+    if (!data.topupRules) return "-";
+    const { minBalance, maxBalance } = data.topupRules;
     if (!minBalance && !maxBalance) return "-";
+    const formatBalance = (val) => `S$${formatNumberWithCommas(val, 0)}`;
     if (minBalance === maxBalance) {
-      return `$${maxBalance}`;
+      return formatBalance(maxBalance);
     }
-    if (!minBalance) return `$${maxBalance}`;
-    if (!maxBalance) return `$${minBalance}`;
-    return `$${minBalance} – $${maxBalance}`;
+    if (!minBalance) return formatBalance(maxBalance);
+    if (!maxBalance) return formatBalance(minBalance);
+    return `${formatBalance(minBalance)} – ${formatBalance(maxBalance)}`;
   };
 
   // Format education levels
   const getEducationLevel = () => {
-    if (!data.criteria?.educationLevel) return "-";
-    return data.criteria.educationLevel;
+    if (!data.topupRules?.educationLevels || data.topupRules.educationLevels.length === 0) return "-";
+    const formatted = data.topupRules.educationLevels
+      .map(level => formatStatus(level))
+      .join(", ");
+    
+    // If text is too long, show with tooltip
+    if (formatted.length > 40) {
+      return (
+        <Tooltip title={formatted} placement="topLeft">
+          <span style={{ cursor: "pointer" }}>
+            {formatted.substring(0, 37)}...
+          </span>
+        </Tooltip>
+      );
+    }
+    return formatted;
   };
 
   // Format schooling status
   const getSchoolingStatus = () => {
-    if (!data.criteria?.schoolingStatus) return "-";
-    return data.criteria.schoolingStatus;
+    if (!data.topupRules?.schoolingStatuses || data.topupRules.schoolingStatuses.length === 0) return "-";
+    const formatted = data.topupRules.schoolingStatuses
+      .map(status => formatStatus(status))
+      .join(", ");
+    
+    // If text is too long, show with tooltip
+    if (formatted.length > 40) {
+      return (
+        <Tooltip title={formatted} placement="topLeft">
+          <span style={{ cursor: "pointer" }}>
+            {formatted.substring(0, 37)}...
+          </span>
+        </Tooltip>
+      );
+    }
+    return formatted;
   };
 
   // Format scheduled datetime
@@ -106,16 +133,18 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
         title={
           data.type === 0 ? "Batch Top-up Details" : "Individual Top-up Details"
         }
+        styles={{ body: { padding: 0, display: 'flex', flexDirection: 'column', maxHeight: 'calc(80vh - 110px)' } }}
       >
-        <div className={styles.description}>
-          <p>
-            {data.type === 0
-              ? "Complete information about this scheduled top-up. Eligible accounts are computed in real-time based on top-up rules and targeting criteria."
-              : "Complete information about this top-up."}
-          </p>
-        </div>
+        <div className={styles.modalBody}>
+          <div className={styles.description}>
+            <p>
+              {data.type === 0
+                ? "Complete information about this scheduled top-up. Eligible accounts are computed in real-time based on top-up rules and targeting criteria."
+                : "Complete information about this top-up."}
+            </p>
+          </div>
 
-        <div className={styles.content}>
+          <div className={styles.content}>
           {/* Type and Rule Name / Account Info Section */}
           <div className={styles.section}>
             <div className={styles.row}>
@@ -184,7 +213,7 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
             </>
           )}
           {/* Top-up Rules Section - Batch Only */}
-          {data.type === 0 && data.criteria && (
+          {data.type === 0 && data.topupRules && (
             <>
               <div className={styles.rulesSection}>
                 <div className={styles.rulesTitle}>Top-up Rules</div>
@@ -192,7 +221,7 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
                 <div className={styles.criteriaItem}>
                   <label className={styles.criteriaLabel}>Targeting Type</label>
                   <span className={styles.criteriaValue}>
-                    {data.criteria.targetingType || "-"}
+                    {getTargetingTypeLabel()}
                   </span>
                 </div>
 
@@ -330,19 +359,19 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
             </>
           )}
         </div>
+        </div>
 
         {/* Footer */}
-        <Divider style={{ margin: "16px 0" }} />
-
         <div className={styles.footer}>
-          <Button
-            danger
-            onClick={() => setShowCancelConfirm(true)}
-            className={styles.cancelBtn}
-            disabled={Number(data.status) === 2}
-          >
-            Cancel Top-up Order
-          </Button>
+          {Number(data.status) === 0 && (
+            <Button
+              danger
+              onClick={() => setShowCancelConfirm(true)}
+              className={styles.cancelBtn}
+            >
+              Cancel Top-up Order
+            </Button>
+          )}
           <Button onClick={onClose}>Close</Button>
         </div>
       </Modal>
@@ -352,7 +381,6 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
         <EligibleAccountsModal
           data={data}
           onClose={() => setShowEligibleAccounts(false)}
-          onCancelTopUp={handleOpenCancelFromEligible}
         />
       )}
 
@@ -361,7 +389,8 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
         <CancelTopUpModal
           data={data}
           onClose={() => setShowCancelConfirm(false)}
-          eligibleCount={eligibleCountForCancel || data.eligibleAccounts || 0}
+          eligibleCount={data.eligibleAccounts || 0}
+          amountPerAccount={data.amountPerAccount || 0}
           onCancelSuccess={onCancelSuccess}
         />
       )}

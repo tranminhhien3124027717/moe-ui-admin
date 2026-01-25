@@ -5,11 +5,11 @@ export const useCancelTopUp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const cancelTopUp = async (ruleId) => {
+  const cancelTopUp = async (ruleId, body) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await topupService.cancelTopUp(ruleId);
+      const response = await topupService.cancelTopUp(ruleId, body);
       setLoading(false);
       return { success: true, data: response };
     } catch (err) {

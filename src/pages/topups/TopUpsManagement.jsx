@@ -18,11 +18,13 @@ const TopUpsManagement = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [selectedTopUp, setSelectedTopUp] = useState(null);
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
   // Use the hook
-  const { data, total, loading, filter, updateFilter, changePage, updateSort, fetchData } = useTopUpList();
+  const { data, total, loading, filter, updateFilter, changePage, updateSort, resetAndFetch } = useTopUpList();
 
-  const { data: topUpDetail } = useTopUpDetail(selectedTopUp);
+  const educationAccountId = selectedRecord?.type === 1 ? selectedRecord?.targetEducationAccountId : null;
+  const { data: topUpDetail } = useTopUpDetail(selectedTopUp, educationAccountId);
   // Handlers
   const handleCreateTopUp = () => {
     setCreateModalOpen(true);
@@ -33,24 +35,27 @@ const TopUpsManagement = () => {
   };
 
   const handleCreateSuccess = () => {
-    // Refresh data after creation
-    fetchData();
+    // Refresh data after creation with sort by CreatedDate descending
+    resetAndFetch();
   };
 
   const handleRowClick = (record) => {
     setSelectedTopUp(record.id);
+    setSelectedRecord(record);
     setDetailModalOpen(true);
   };
 
   const handleCloseDetailModal = () => {
     setDetailModalOpen(false);
     setSelectedTopUp(null);
+    setSelectedRecord(null);
   };
 
   const handleCancelSuccess = () => {
     setDetailModalOpen(false);
     setSelectedTopUp(null);
-    fetchData();
+    setSelectedRecord(null);
+    resetAndFetch();
   };
 
   return (

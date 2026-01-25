@@ -37,7 +37,8 @@ const DetailsForm = ({ accounts, value, onChange, onBack, onNext }) => {
     if (
       !value.description ||
       value.amount === null ||
-      value.amount === undefined
+      value.amount === undefined ||
+      parseFloat(value.amount) <= 0
     )
       return false;
 

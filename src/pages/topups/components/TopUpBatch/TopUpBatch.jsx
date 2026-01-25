@@ -142,6 +142,7 @@ const TopUpBatch = ({ onSubmit, onClose, loading }) => {
     const hasRequiredFields =
       !!formData.ruleName &&
       !!formData.amount &&
+      parseFloat(formData.amount) > 0 &&
       !!formData.description;
 
     if (!hasRequiredFields) return false;

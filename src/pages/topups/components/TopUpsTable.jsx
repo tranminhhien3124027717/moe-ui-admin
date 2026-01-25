@@ -39,8 +39,8 @@ const TopUpsTable = ({
   };
 
   const formatAmount = (amount) => {
-    if (!amount) return "$0";
-    return `$${parseFloat(amount).toLocaleString('en-US')}`;
+    if (!amount) return "S$0";
+    return `S$${parseFloat(amount).toLocaleString('en-US')}`;
   };
 
   const formatDateTime = (dateString) => {

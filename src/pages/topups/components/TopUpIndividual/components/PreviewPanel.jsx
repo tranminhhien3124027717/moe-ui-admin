@@ -26,8 +26,8 @@ const PreviewPanel = ({ accounts, data, onBack, onSubmit, loading }) => {
   const totalAmount = accounts.length > 0 ? parseFloat(data.amount || 0) * accounts.length : 0;
 
   const formatCurrency = (value) => {
-    if (value === null || value === undefined) return "$0";
-    return `$${parseFloat(value).toLocaleString('en-US')}`;
+    if (value === null || value === undefined) return "S$0";
+    return `S$${parseFloat(value).toLocaleString('en-US')}`;
   };
 
   const getExecutionDisplay = () => {

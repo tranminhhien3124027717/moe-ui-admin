@@ -51,10 +51,11 @@ export const topupService = {
     }
   },
 
-  async getTopUpDetail(ruleId) {
+  async getTopUpDetail(ruleId, educationAccountId = null) {
     try {
       const url = `top-ups/${ruleId}`;
-      const res = await api.get(url);
+      const params = educationAccountId ? { educationAccountId } : {};
+      const res = await api.get(url, { params });
       return res;
     } catch (error) {
       console.log(error);
@@ -117,17 +118,17 @@ export const topupService = {
     }
   },
 
-  async cancelTopUp(ruleId) {
+  async cancelTopUp(ruleId, body) {
     try {
       const url = `top-ups/scheduled/${ruleId}/cancel`;
-      const res = await api.post(url);
+      const res = await api.post(url, body);
       return res;
     } catch (error) {
       console.log(error);
       throw {
         source: "API",
         message:
-          error.response?.data?.message || "API cancel top up failed",
+          error.response?.data?.title || "API cancel top up failed",
         status: error.response?.status,
         raw: error,
       };

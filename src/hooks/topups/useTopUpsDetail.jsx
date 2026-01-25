@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { topupService } from "../../services/topupService";
 
-export const useTopUpDetail = (ruleId) => {
+export const useTopUpDetail = (ruleId, educationAccountId = null) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchData = async (id) => {
+  const fetchData = async (id, accId = null) => {
     if (!id) return;
     setLoading(true);
     try {
-      const result = await topupService.getTopUpDetail(id);
+      const result = await topupService.getTopUpDetail(id, accId);
       const detailData = result?.data || result || null;
       setData(detailData);
     } catch (error) {
@@ -21,13 +21,13 @@ export const useTopUpDetail = (ruleId) => {
   };
 
   useEffect(() => {
-    fetchData(ruleId);
-  }, [ruleId]);
+    fetchData(ruleId, educationAccountId);
+  }, [ruleId, educationAccountId]);
 
 
   return {
     data,
     loading,
-    refetch: fetchData,
+    refetch: (id, accId) => fetchData(id, accId),
   };
 };

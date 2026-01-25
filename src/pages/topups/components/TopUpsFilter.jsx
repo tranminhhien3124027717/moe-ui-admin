@@ -121,7 +121,7 @@ const TopUpsFilter = ({ filter, updateFilter, total, dataCount }) => {
   };
 
   const handleClearFilters = () => {
-    setActivePeriod(null);
+    setActivePeriod("all");
     setIsManualDateInput(false);
     updateFilter({
       Search: "",
@@ -299,7 +299,7 @@ const TopUpsFilter = ({ filter, updateFilter, total, dataCount }) => {
 
       <div className={styles.filterFooter}>
         <span className={styles.showingText}>
-          Showing {dataCount || 0} of {total} top-ups
+          Showing {dataCount || 0} of {dataCount || 0} top-ups
         </span>
 
         {hasActiveFilters() && (

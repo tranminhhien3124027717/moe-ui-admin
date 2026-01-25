@@ -51,7 +51,7 @@ const CourseDetail = () => {
     const [isRemoveMode, setIsRemoveMode] = useState(false);
     const [selectedEnrollmentIds, setSelectedEnrollmentIds] = useState([]);
     const [submitting, setSubmitting] = useState(false);
-    
+
     // Edit modal state
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editForm] = Form.useForm();
@@ -162,7 +162,7 @@ const CourseDetail = () => {
             setIsAddStudentModalOpen(false);
             setSelectedStudentIds([]);
             setStudentSearchQuery('');
-            
+
             // Refresh course detail
             refetch();
         } catch (error) {
@@ -178,7 +178,7 @@ const CourseDetail = () => {
         if (selectedEnrollmentIds.length === 0 || !course) return;
 
         console.log('Selected Education Account IDs:', selectedEnrollmentIds);
-        
+
         setSubmitting(true);
         try {
             await courseService.bulkRemoveStudents(courseCode, {
@@ -188,7 +188,7 @@ const CourseDetail = () => {
             messageApi.success(`Successfully removed ${selectedEnrollmentIds.length} student(s)`);
             setSelectedEnrollmentIds([]);
             setIsRemoveMode(false);
-            
+
             // Refresh course detail
             refetch();
         } catch (error) {
@@ -207,26 +207,34 @@ const CourseDetail = () => {
     };
 
     // Handle edit course
+    // Handle edit course
     const handleEditCourse = async () => {
         if (!course) return;
-        
+
         // Populate form with current values
         editForm.setFieldsValue({
             courseName: course.courseName,
-            educationLevel: course.educationLevel || '',
+            // [QUAN TRỌNG] Chỗ này phải đảm bảo course.educationLevel là ID (ví dụ 'SL-001') 
+            // hoặc Name tùy theo cách backend lưu. 
+            // Nếu Select bên dưới dùng ID thì ở đây phải là ID.
+            educationLevel: course.educationLevel || undefined,
             endDate: course.endDate ? new Date(course.endDate) : null,
             mode: course.mode || 'Online',
             status: course.status,
         });
-        
+
         setIsEditModalOpen(true);
-        
-        // Fetch schooling levels for the provider
+
+        // Fetch schooling levels
+        // [SỬA KHÚC NÀY]
         if (course.providerId) {
             setLoadingSchoolingLevels(true);
             try {
                 const response = await courseService.getProviderSchoolingLevels(course.providerId);
-                setSchoolingLevels(response.data || []);
+                // API returns { data: [...] } so we need to access response.data
+                // setSchoolingLevels(response.data || []);
+                console.log("API Response Raw:", response);
+                setSchoolingLevels(response || []);
             } catch (error) {
                 messageApi.error('Failed to load education levels');
                 console.error('Error fetching schooling levels:', error);
@@ -240,18 +248,18 @@ const CourseDetail = () => {
         try {
             const values = await editForm.validateFields();
             setEditSubmitting(true);
-            
+
             const updateData = {
                 courseName: values.courseName,
                 educationLevel: values.educationLevel || null,
                 learningType: values.mode,
                 status: values.status || null,
             };
-            
+
             await courseService.updateCourse(courseCode, updateData);
             messageApi.success('Course updated successfully');
             setIsEditModalOpen(false);
-            
+
             // Refresh course detail
             refetch();
         } catch (error) {
@@ -508,7 +516,7 @@ const CourseDetail = () => {
                         <div>
                             <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>Billing Cycle</div>
                             <div style={{ fontWeight: 500, color: '#0f172a' }}>
-                                {course.paymentType === 'Recurring' 
+                                {course.paymentType === 'Recurring'
                                     ? (course.billingCycle ? billingCycleLabels[course.billingCycle] || course.billingCycle : '-')
                                     : '—'
                                 }
@@ -782,8 +790,8 @@ const CourseDetail = () => {
                                 disabled={loadingSchoolingLevels}
                             >
                                 {schoolingLevels.map((level) => (
-                                    <Select.Option key={level.levelName} value={level.levelName}>
-                                        {level.levelName}
+                                    <Select.Option key={level.id} value={level.name}>
+                                        {level.name}
                                     </Select.Option>
                                 ))}
                             </Select>
@@ -839,7 +847,7 @@ const CourseDetail = () => {
                             }
                         >
                             <Input
-                                value={course.paymentType === 'Recurring' 
+                                value={course.paymentType === 'Recurring'
                                     ? (course.billingCycle ? billingCycleLabels[course.billingCycle] || course.billingCycle : '-')
                                     : '—'
                                 }

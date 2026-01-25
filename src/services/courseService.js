@@ -21,6 +21,26 @@ export const courseService = {
         }
     },
 
+    async getActiveProviders(search = '') {
+        try {
+            const url = "providers/active";
+            const params = {};
+            if (search) {
+                params.search = search;
+            }
+            const res = await api.get(url, { params });
+            return res;
+        } catch (error) {
+            console.log(error);
+            throw {
+                source: "API",
+                message: error.response?.data?.message || "API get active providers failed",
+                status: error.response?.status,
+                raw: error,
+            };
+        }
+    },
+
     async getListCourses(params) {
         try {
             const url = "courses";
@@ -153,7 +173,7 @@ export const courseService = {
         try {
             const url = `providers/${providerId}/schooling-levels`;
             const res = await api.get(url);
-            return res.data;
+            return res;
         } catch (error) {
             console.log(error);
             throw {

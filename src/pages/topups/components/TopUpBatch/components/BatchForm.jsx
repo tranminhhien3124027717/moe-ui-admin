@@ -122,7 +122,22 @@ const BatchForm = ({ value, onChange }) => {
   };
 
   const handleAmountChange = (num) => {
-    onChange({ ...value, amount: num ? num.toString() : "" });
+    const updatedValue = { ...value, amount: num ? num.toString() : "" };
+    
+    // Validate amount
+    const errors = { ...validationErrors };
+    if (num !== null && num !== undefined && num !== "") {
+      if (num <= 0) {
+        errors.amount = "Amount must be greater than 0";
+      } else {
+        delete errors.amount;
+      }
+    } else {
+      delete errors.amount;
+    }
+    
+    setValidationErrors(errors);
+    onChange(updatedValue);
   };
 
   const handleAgeChange = (field, num) => {
@@ -227,6 +242,11 @@ const BatchForm = ({ value, onChange }) => {
           step={0.01}
           min={0}
         />
+        {validationErrors.amount && (
+          <div className={styles.errorMessage}>
+            {validationErrors.amount}
+          </div>
+        )}
       </div>
 
       {/* Description */}

@@ -22,6 +22,26 @@ export const providerService = {
     },
 
     /**
+     * Get active providers only
+     * @returns {Promise} List of active providers
+     */
+    async getActiveProviders() {
+        try {
+            const url = "providers/active";
+            const res = await api.get(url);
+            return res;
+        } catch (error) {
+            console.error("Get active providers error:", error);
+            throw {
+                source: "API",
+                message: error.response?.data?.message || "Failed to get active providers",
+                status: error.response?.status,
+                raw: error,
+            };
+        }
+    },
+
+    /**
      * Get provider by ID
      * @param {string} id - Provider ID
      * @returns {Promise} Provider details

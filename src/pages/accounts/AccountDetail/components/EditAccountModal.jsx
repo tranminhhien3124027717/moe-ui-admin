@@ -104,8 +104,10 @@ const EditAccountModal = ({ open, onCancel, onSave, accountInfo, loading }) => {
               name="email"
               rules={[
                 { required: true, message: "Please enter email" },
-                { type: "email", message: "Please enter valid email" }
+                { type: "email", message: "Please enter valid email" },
+                { pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Please enter a valid email with full domain (e.g., user@example.com)" }
               ]}
+              required
             >
               <Input placeholder="Enter email address" size="large" />
             </Form.Item>
@@ -116,8 +118,10 @@ const EditAccountModal = ({ open, onCancel, onSave, accountInfo, loading }) => {
               label="Phone"
               name="phone"
               rules={[
+                { required: true, message: "Please input phone number!" },
                 { pattern: /^[689]\d{7}$/, message: "Please enter valid 8-digit number starting with 6, 8, or 9" }
               ]}
+              required
             >
               <Input addonBefore="+65" placeholder="8XXXXXXX" size="large" />
             </Form.Item>
@@ -125,6 +129,8 @@ const EditAccountModal = ({ open, onCancel, onSave, accountInfo, loading }) => {
             <Form.Item
               label="Education Level"
               name="educationLevel"
+              rules={[{ required: true, message: "Please select education level!" }]}
+              required
             >
               <Select
                 placeholder="Select education level"
@@ -144,6 +150,8 @@ const EditAccountModal = ({ open, onCancel, onSave, accountInfo, loading }) => {
           <Form.Item
             label="Registered Address"
             name="registeredAddress"
+            rules={[{ required: true, message: "Please input registered address!" }]}
+            required
           >
             <Input.TextArea
               placeholder="Enter registered address"
@@ -155,6 +163,8 @@ const EditAccountModal = ({ open, onCancel, onSave, accountInfo, loading }) => {
           <Form.Item
             label="Mailing Address"
             name="mailingAddress"
+            rules={[{ required: true, message: "Please input mailing address!" }]}
+            required
           >
             <Input.TextArea
               placeholder="Enter mailing address"

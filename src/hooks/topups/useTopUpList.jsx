@@ -24,6 +24,7 @@ export const useTopUpList = () => {
 
   const fetchData = async (customFilter = filter) => {
     setLoading(true);
+    setData([]);
     try {
       // Clean up filter - don't send null, empty strings, or empty arrays
       const cleanFilter = {};
@@ -55,6 +56,7 @@ export const useTopUpList = () => {
 
   // 🔹 update filter
   const updateFilter = (newFilter) => {
+    setData([]);
     setFilter((prev) => ({
       ...prev,
       ...newFilter,
@@ -63,6 +65,7 @@ export const useTopUpList = () => {
   };
 
   const changePage = (page, pageSize) => {
+    setData([]);
     setFilter((prev) => ({
       ...prev,
       pageNumber: page,
@@ -80,6 +83,7 @@ export const useTopUpList = () => {
       'scheduledTime': 'ScheduledTime',
       'createdDate': 'CreatedDate'
     };
+    setData([]);
 
     setFilter((prev) => ({
       ...prev,
@@ -87,6 +91,16 @@ export const useTopUpList = () => {
       SortDescending: order === 'descend',
       pageNumber: 1,
     }));
+  };
+
+  const resetAndFetch = () => {
+    setData([]);
+    setFilter({
+      ...DEFAULT_FILTER,
+      SortBy: 'CreatedDate',
+      SortDescending: true,
+      pageNumber: 1,
+    });
   };
 
   return {
@@ -98,5 +112,6 @@ export const useTopUpList = () => {
     changePage,
     updateSort,
     fetchData,
+    resetAndFetch,
   };
 };

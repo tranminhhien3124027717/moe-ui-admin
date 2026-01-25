@@ -7,7 +7,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CourseHeader from './components/CourseHeader';
 import CourseFilters from './components/CourseFilters';
 import CourseTable from './components/CourseTable';
-import AddCourseModal from '../components/AddCourseModal/AddCourseModal';
+import AddCourseModal from '../../courses/components/AddCourseModal';
 import { courseService } from '../../../services/courseService';
 import styles from './index.module.scss';
 
