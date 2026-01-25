@@ -234,7 +234,7 @@ const CourseDetail = () => {
                 // API returns { data: [...] } so we need to access response.data
                 // setSchoolingLevels(response.data || []);
                 console.log("API Response Raw:", response);
-                setSchoolingLevels(response || []);
+                setSchoolingLevels(response.data || []);
             } catch (error) {
                 messageApi.error('Failed to load education levels');
                 console.error('Error fetching schooling levels:', error);
