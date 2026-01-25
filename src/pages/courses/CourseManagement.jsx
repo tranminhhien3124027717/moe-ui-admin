@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Button, Table, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import AddCourseModal from './components/AddCourseModal/AddCourseModal';
+import AddCourseModal from '../courses/components/AddCourseModal/index';
 import CourseFilter from './components/CourseFilter/CourseFilter';
 import { useCourseList } from '../../hooks/courses/useCourseList';
 import { courseService } from '../../services/courseService';
@@ -30,33 +30,17 @@ const CourseManagement = () => {
         enrolled: course.enrolledCount !== undefined ? course.enrolledCount : 0
     }));
 
-    const handleAddCourse = async (values) => {
+
+    const handleAddCourse = async (courseData) => {
         try {
-            // Validate total fee
-            const totalFee = parseFloat(values.totalFee);
-            if (!totalFee || totalFee <= 0) {
+
+            if (!courseData.totalFee || courseData.totalFee <= 0) {
                 messageApi.error('Total fee must be greater than 0');
                 return;
             }
 
-            const payload = {
-                courseName: values.name,
-                providerId: values.providerId,
-                providerName: values.providerName,
-                modeOfTraining: values.mode,
-                courseStartDate: values.startDate ? dayjs(values.startDate).toISOString() : null,
-                courseEndDate: values.endDate ? dayjs(values.endDate).toISOString() : null,
-                paymentOption: values.payment?.Type,
-                billingCycle: values.billingCycle,
-                totalFee: totalFee,
-                feePerCycle: parseFloat(values.feePerCycle),
-                status: values.status,
-                educationLevel: values.educationLevel,
-                billingDate: values.billingDate,
-                paymentDue: values.paymentDue
-            };
+            await courseService.createCourse(courseData);
 
-            await courseService.createCourse(payload);
             messageApi.success('Course added successfully');
             setIsModalOpen(false);
             fetchData();
@@ -145,7 +129,7 @@ const CourseManagement = () => {
             className: styles.columnTotalFee,
             sorter: true,
             width: 160,
-            render: (text) => <span style={{ fontWeight: 600 ,color: '#0f766e'}}>S{text}</span>
+            render: (text) => <span style={{ fontWeight: 600, color: '#0f766e' }}>S{text}</span>
         },
         {
             title: 'Mode of Training',
