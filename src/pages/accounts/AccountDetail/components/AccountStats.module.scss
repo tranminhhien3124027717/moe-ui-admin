@@ -1,0 +1,16 @@
+@use '../../../../assets/styles/variables' as *;
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+
+  &.twoColumn {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}

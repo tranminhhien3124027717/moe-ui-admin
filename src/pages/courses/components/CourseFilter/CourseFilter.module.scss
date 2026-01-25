@@ -1,0 +1,362 @@
+@use '../../../../assets/styles/variables' as *;
+
+.filterCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+
+  .filtersRow {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 20px 24px;
+    align-items: flex-end;
+    width: 100%;
+
+    .filterItem {
+      min-width: 100px;
+      border-radius: 16px;
+
+      .label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #64748b;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        svg {
+          color: #64748b;
+        }
+      }
+
+      .mainSearch {
+        height: 46px;
+        border-radius: 16px;
+        background-color: #fffdfd;
+        border: 1px solid #e2e8f0;
+        font-size: 15px;
+        width: 100%;
+
+        :global {
+          input {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e293b;
+            background-color: transparent !important;
+
+            &::placeholder {
+              color: #94a3b8;
+              font-size: 13px;
+            }
+          }
+        }
+
+        &:hover,
+        &:focus-within {
+          border-color: #1e3a8a;
+          box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.05);
+        }
+      }
+
+      .filterSelect {
+        width: 100%;
+        height: 48px;
+        border-radius: 16px;
+
+        :global {
+          .ant-select {
+            width: 100%;
+            border-radius: 16px !important;
+            overflow: hidden;
+          }
+
+          .ant-select-selector {
+            position: relative;
+            background-color: #fffdfd !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 16px !important;
+            height: 48px !important;
+            display: flex;
+            align-items: center;
+            padding: 0 16px 0 52px !important;
+            box-shadow: none !important;
+            overflow: hidden;
+          }
+
+          .ant-select-selector:hover {
+            border-color: #cbd5e1 !important;
+          }
+
+          .ant-select-selection-item,
+          .ant-select-selection-overflow,
+          .ant-select-selection-search-input {
+            opacity: 0 !important;
+            visibility: hidden !important;
+          }
+
+          .ant-select-selection-placeholder,
+          .ant-select-placeholder {
+            opacity: 0 !important;
+            visibility: hidden !important;
+          }
+
+          .ant-select-selection-search {
+            inset-inline-start: 16px !important;
+            display: flex;
+            align-items: center;
+          }
+
+          .ant-select-content {
+            display: flex !important;
+            align-items: center !important;
+            height: 100% !important;
+            padding-left: 8px;
+          }
+        }
+      }
+
+      .customOption {
+        display: flex;
+        align-items: center;
+        padding: 4px 0;
+      }
+
+      .datePicker {
+        width: 100%;
+        height: 48px;
+        border-radius: 16px;
+        background-color: #fffdfd;
+        border: 1px solid #e2e8f0;
+
+        :global {
+          input {
+            font-size: 14px;
+            color: #1e293b;
+
+            &::placeholder {
+              color: #000000e0;
+              font-size: 14px;
+            }
+          }
+
+          .ant-picker-input {
+            padding: 0 16px;
+          }
+        }
+
+        &:hover {
+          border-color: #cbd5e1;
+        }
+      }
+    }
+
+    .searchItem {
+      grid-column: span 5;
+    }
+
+    .inlineField {
+      position: relative;
+
+      .fieldOverlay {
+        position: absolute;
+        inset-inline-start: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1e293b;
+        pointer-events: none;
+        z-index: 2;
+        white-space: nowrap;
+
+        svg {
+          color: #475569;
+          font-size: 16px;
+        }
+      }
+
+      .filterSelect {
+        :global {
+          .ant-select {
+            border-radius: 16px !important;
+          }
+
+          .ant-select-selector {
+            border-radius: 16px !important;
+          }
+        }
+      }
+    }
+
+    .inlineFieldHasValue {
+      .fieldOverlay {
+        color: #0f172a;
+      }
+    }
+
+    .providerField {
+
+      .filterSelect {
+        :global {
+          .ant-select-selector {
+            padding-inline-start: 56px !important;
+          }
+        }
+      }
+    }
+
+    .dateItem {
+      grid-column: span 2;
+      min-width: 200px;
+    }
+
+    .rangeItem {
+      grid-column: span 3;
+      min-width: 260px;
+    }
+
+    .rangeGroup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .rangeInput {
+        flex: 1;
+        height: 48px;
+        background-color: #fffdfd;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        text-align: left;
+        font-size: 14px;
+        color: #64748b;
+        padding: 0 12px;
+
+        &::placeholder {
+          color: #abaeb1;
+          font-size: 14px;
+          font-weight: 400;
+        }
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+
+      .separator {
+        color: #94a3b8;
+        font-weight: 500;
+      }
+    }
+
+    .errorText {
+      color: #ff4d4f;
+      font-size: 12px;
+      margin-top: 6px;
+      display: block;
+    }
+  }
+
+  .filterFooter {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    .showingText {
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .clearBtn {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      height: auto;
+      font-size: 14px;
+
+      &:hover {
+        background: transparent;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .filterCard {
+    .filtersRow {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+
+      .searchItem {
+        grid-column: span 6;
+      }
+
+      .inlineField,
+      .dateItem {
+        grid-column: span 3;
+      }
+
+      .rangeItem {
+        grid-column: span 6;
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .filterCard {
+    .filtersRow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      .searchItem {
+        grid-column: span 2;
+      }
+
+      .inlineField,
+      .dateItem {
+        grid-column: span 1;
+      }
+
+      .rangeItem {
+        grid-column: span 2;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .filterCard {
+    padding: 20px;
+
+    .filtersRow {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+
+      .searchItem,
+      .inlineField,
+      .dateItem,
+      .rangeItem {
+        grid-column: span 1;
+      }
+    }
+  }
+}
+
+.providerDropdown {
+  min-width: 360px;
+}

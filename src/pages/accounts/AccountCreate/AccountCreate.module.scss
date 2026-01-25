@@ -1,0 +1,149 @@
+.addStudentModal {
+  :global {
+    .ant-modal-content {
+      border-radius: 16px;
+      padding: 0; 
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+  }
+
+  .header {
+    margin-bottom: 28px;
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 8px 0;
+    }
+    p {
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+  }
+
+  .verifiedTag {
+      display: block;
+      margin-top: 6px;
+      color: #059669; // Green
+      font-size: 13px;
+      font-weight: 500;
+      svg { margin-right: 4px; }
+  }
+
+  .form {
+    :global {
+      .ant-form-item {
+          margin-bottom: 20px;
+      }
+      .ant-form-item-label > label {
+        font-weight: 600;
+        color: #334155;
+        font-size: 14px;
+      }
+
+
+      // Style chung cho input
+      .ant-input, .ant-picker, .ant-select-selector {
+        height: 44px;
+        border-radius: 8px;
+        border-color: #e2e8f0;
+        color: #1e293b;
+        font-size: 15px;
+        
+        &:hover, &:focus {
+            border-color: #0f766e;
+            box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.1);
+        }
+      }
+      
+      // Style cho input bị Disable (Màu xám)
+      .ant-input[disabled], 
+      .ant-picker-disabled {
+        background-color: #f1f5f9 !important; 
+        border-color: #e2e8f0 !important;
+        color: #94a3b8 !important; 
+        cursor: not-allowed;
+        
+
+        &[value]:not([value=""]) {
+             color: #64748b !important; 
+             font-weight: 500;
+        }
+      }
+    }
+    
+    // Nút Verify gắn liền input
+    .verifyBtn {
+      position: relative;
+      left: -5px;
+      z-index: 999;
+        height: 44px;
+        background-color: #0f766e;
+        border: 1px solid #0f766e;
+        border-radius: 0 8px 8px 0;
+        font-weight: 600;
+        &:hover { background-color: #115e59 !important; }
+    }
+
+    .resetBtn {
+      position: relative;
+      left: -5px;
+      z-index: 999;
+        height: 44px;
+        border-radius: 0 8px 8px 0;
+        color: #ef4444;
+        border-color: #e2e8f0;
+        &:hover { border-color: #ef4444; background: #fef2f2; }
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #f1f5f9;
+
+    .cancelBtn {
+      height: 44px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: #475569;
+      border-color: #e2e8f0;
+      padding: 0 24px;
+      
+      &:hover {
+          color: #0f172a;
+          border-color: #cbd5e1;
+          background-color: #fff;
+      }
+    }
+
+    .createBtn {
+      height: 44px;
+      border-radius: 8px;
+      font-weight: 600;
+      background-color: #0f766e;
+      border-color: #0f766e;
+      padding: 0 24px;
+      box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.2);
+      
+      &:hover {
+          background-color: #115e59 !important;
+          border-color: #115e59 !important;
+      }
+      
+      &:disabled {
+          background-color: #e2e8f0 !important;
+          border-color: #e2e8f0 !important;
+          color: #94a3b8 !important;
+          box-shadow: none;
+      }
+    }
+  }
+}

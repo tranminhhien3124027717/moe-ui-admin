@@ -1,0 +1,61 @@
+@use '../../../../assets/styles/variables' as *;
+
+.topHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .pageTitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+  }
+
+  .pageSubtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+  }
+
+  .actionButtons {
+    display: flex;
+    gap: 12px;
+
+    .importBtn {
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 2px solid #e2e8f0;
+      color: #64748b;
+      background: white;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: #cbd5e1;
+        color: #475569;
+      }
+    }
+
+    .addBtn {
+      height: 44px;
+      padding: 0 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      background: #0f766e;
+      border: none;
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.2);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #0d9488 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3) !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+.statusTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 20px; 
+  font-size: 12px;
+  font-weight: 700; 
+  text-transform: capitalize; 
+  white-space: nowrap;
+  line-height: 1;
+  transition: all 0.2s;
+  border: 1px solid transparent; 
+  font-family: 'Inter', sans-serif;
+
+  // --- 1. SUCCESS (Xanh lá) ---
+  &.success {
+    background-color: #f0fdf4; // Green-50
+    color: #15803d;            // Green-700
+    border-color: #bbf7d0;     // Green-200
+  }
+
+  // --- 2. WARNING (Cam) ---
+  &.warning {
+    background-color: #fffbeb; // Amber-50
+    color: #b45309;            // Amber-700
+    border-color: #fde68a;     // Amber-200
+  }
+
+  // --- 3. INFO (Xanh dương) ---
+  &.info {
+    background-color: #eff6ff; // Blue-50
+    color: #1d4ed8;            // Blue-700
+    border-color: #bfdbfe;     // Blue-200
+  }
+
+  // --- 4. ERROR (Đỏ) ---
+  &.error {
+    background-color: #fef2f2; // Red-50
+    color: #b91c1c;            // Red-700
+    border-color: #fecaca;     // Red-200
+  }
+
+  // --- 5. ACTIVE (Teal - Brand Color) ---
+  &.active {
+    background-color: #f0fdfa; // Teal-50
+    color: #0f766e;            // Teal-700
+    border-color: #99f6e4;     // Teal-200
+  }
+
+  // --- 6. NEUTRAL (Xám) ---
+  &.neutral {
+    background-color: #f8fafc; // Slate-50
+    color: #64748b;            // Slate-500
+    border-color: #e2e8f0;     // Slate-200
+  }
+}

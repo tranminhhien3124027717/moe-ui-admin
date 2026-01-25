@@ -1,0 +1,657 @@
+@use "../../../../assets/styles/_variables.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Step Header Styles */
+.stepHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.progress {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    background: #162f69;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0;
+  }
+
+  &[data-step="1"]::before {
+    width: 50%;
+  }
+
+  &[data-step="2"]::before {
+    width: 100%;
+  }
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    color: #94a3b8;
+    transition: color 0.3s ease;
+
+    &.active {
+      color: #162f69;
+      font-weight: 600;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.formContent {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-right: 4px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+/* Form Styles */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  width: 100%;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.formLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.formInput {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1e293b;
+  background-color: #fff;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #cbd5e1;
+  }
+
+  &:focus {
+    border-color: #162f69;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+}
+
+.twoColumnGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 16px;
+
+  .formGroup {
+    margin-bottom: 0;
+  }
+}
+
+.rangeInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.rangeInput {
+  flex: 1;
+  
+  :global(.ant-input-number) {
+    width: 100%;
+    height: 40px;
+  }
+
+  :global(.ant-input-number-input) {
+    padding: 8px 12px;
+  }
+}
+
+.rangeLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.rangeSeparator {
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  padding-bottom: 0;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 8px;
+
+  :global(.ant-checkbox) {
+    &:hover :global(.ant-checkbox-inner) {
+      border-color: #162f69;
+    }
+
+    &:focus-within :global(.ant-checkbox-inner) {
+      border-color: #162f69;
+    }
+  }
+
+  :global(.ant-checkbox-checked .ant-checkbox-inner) {
+    background-color: #162f69;
+    border-color: #162f69;
+  }
+
+  :global(.ant-checkbox-wrapper:hover) {
+    color: #162f69;
+  }
+}
+
+.scheduleRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.scheduleField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.helperText {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Preview Styles */
+.previewBox {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.previewSectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f766e;
+  margin: 0;
+}
+
+.previewSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.previewSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.previewLabel {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.previewValue {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.previewAmount {
+  color: #059669;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.previewTotal {
+  color: #0f766e;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.previewNote {
+  background: #f0fdf4;
+  border-left: 3px solid #059669;
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #15803d;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.rulesSection {
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.rulesTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f766e;
+  margin-bottom: 12px;
+}
+
+.rulesCriteria {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.criteriaItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 0;
+}
+
+.criteriaLabel {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.criteriaValue {
+  color: #0f172a;
+  font-weight: 500;
+  text-align: right;
+}
+
+.accountsList {
+  margin-top: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+.accountItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 4px;
+  background: #fff;
+  margin-bottom: 6px;
+  font-size: 13px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.eligibleAccountsContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #cbd5e1;
+    background-color: #f1f5f9;
+  }
+}
+
+.eligibleAccountsIcon {
+  font-size: 18px;
+  color: #162f69;
+  flex-shrink: 0;
+}
+
+.eligibleAccountsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.eligibleAccountsLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.eligibleAccountsNumber {
+  font-size: 18px;
+  font-weight: 600;
+  color: #162f69;
+}
+
+.errorMessage {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* Footer Styles */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+  margin-top: 16px;
+
+  :global(.ant-btn) {
+    min-width: 140px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  :global(.ant-btn-default) {
+    background-color: #f1f5f9;
+    color: #334155;
+
+    &:hover:not(:disabled) {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+  }
+
+  :global(.ant-btn-primary) {
+    background-color: #0f766e;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background-color: #0d5f5b;
+    }
+
+    &:disabled {
+      background-color: #cbd5e1;
+      color: #94a3b8;
+    }
+  }
+}
+/* Eligible Accounts Modal and Preview Styles */
+.eligibleAccountsModal {
+  :global(.ant-modal-header) {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px 24px;
+  }
+
+  :global(.ant-modal-title) {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  :global(.ant-modal-close) {
+    color: #94a3b8;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #334155;
+    }
+  }
+}
+
+.modalDescription {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 16px;
+  line-height: 1.6;
+
+  strong {
+    color: #1e293b;
+    font-weight: 600;
+  }
+}
+
+.modalAccountsList {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+.modalAccountItem {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: #f8fafc;
+  }
+}
+
+.modalAccountNumber {
+  font-weight: 600;
+  color: #162f69;
+  min-width: 24px;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.modalAccountDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.modalAccountName {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.modalAccountInfo {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.modalFooter {
+  padding: 12px 0;
+  text-align: right;
+  margin-top: 16px;
+}
+
+.modalCloseButton {
+  padding: 8px 20px;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+  }
+}
+
+
+.viewListButtonWrapper {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+
+.viewListButton {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  background: #0f766e;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  line-height: 28px;
+
+  &:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    color: #475569;
+  }
+
+  &:active {
+    border-color: #162f69;
+    background: #f0f4ff;
+    color: #162f69;
+  }
+}

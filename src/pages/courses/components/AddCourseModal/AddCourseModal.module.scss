@@ -1,0 +1,504 @@
+@use '../../../../assets/styles/_variables' as *;
+
+:global {
+
+    .addCourseModal .ant-modal-mask,
+    .ant-modal-wrap.addCourseModal .ant-modal-mask {
+        background-color: rgba(0, 0, 0, 0.85) !important;
+    }
+}
+
+.addCourseModal {
+    :global {
+        .ant-modal {
+            max-width: 600px !important;
+            width: 600px !important;
+        }
+
+        .ant-modal-content {
+            border-radius: $radius-lg;
+            padding: 2rem;
+            box-sizing: border-box;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .ant-modal-close {
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 2rem;
+            height: 2rem;
+
+            .ant-modal-close-x {
+                width: 2rem;
+                height: 2rem;
+                line-height: 2rem;
+                font-size: 1rem;
+                color: $color-text-sub;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    color: $color-text-main;
+                }
+            }
+        }
+
+        .ant-modal-body {
+            padding: 0;
+        }
+    }
+
+    .modalContent {
+        .modalHeader {
+            margin-bottom: 1.5rem;
+            padding: 0;
+
+            .modalTitle {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: $color-text-main;
+                margin: 0 0 0.25rem 0;
+                line-height: 1.5;
+            }
+
+            .modalSubtitle {
+                font-size: 0.875rem;
+                color: $color-text-sub;
+                margin: 0;
+                line-height: 1.4;
+            }
+        }
+
+        .courseForm {
+            :global {
+                .ant-form-item {
+                    margin-bottom: 1rem;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .ant-form-item-label {
+                    padding: 0 0 0.375rem 0;
+                    line-height: 1.5;
+
+                    >label {
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        color: $color-text-main;
+                        height: auto;
+                        line-height: 1.5;
+                        display: inline-flex;
+                        align-items: center;
+                        width: 100%;
+
+                        &.ant-form-item-required::before {
+                            display: none !important;
+                            content: none !important;
+                        }
+
+                        &.ant-form-item-required::after {
+                            content: '*' !important;
+                            color: #ef4444 !important;
+                            margin-left: 0.25rem !important;
+                            display: inline-block !important;
+                            margin-right: 0 !important;
+                        }
+                    }
+                }
+
+                .ant-input,
+                .ant-select-selector,
+                .ant-picker {
+                    border-radius: $radius-base !important;
+                    border-color: #e2e8f0 !important;
+                    font-size: 0.875rem;
+                    transition: all 0.2s ease;
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+
+                    &:hover {
+                        border-color: $color-teal !important;
+                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+                    }
+
+                    &:focus,
+                    &.ant-input-focused,
+                    &.ant-select-focused .ant-select-selector,
+                    &.ant-picker-focused {
+                        border-color: $color-teal !important;
+                        box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1) !important;
+                    }
+
+                    // Disabled state
+                    &.ant-input-disabled,
+                    &.ant-picker-disabled {
+                        background-color: #f5f5f5;
+                        color: #a3a3a3;
+                    }
+                }
+
+                .ant-input {
+                    height: 2.5rem;
+                    padding: 0.5rem 0.75rem;
+                    box-sizing: border-box;
+
+                    &::placeholder {
+                        color: #9ca3af;
+                    }
+                }
+
+                .ant-select {
+                    width: 100%;
+                }
+
+                .ant-select-selector {
+                    height: 2.5rem !important;
+                    padding: 0.25rem 0.75rem !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    box-sizing: border-box;
+                }
+
+                .ant-select-selection-item,
+                .ant-select-selection-placeholder {
+                    line-height: 2rem !important;
+                    display: flex !important;
+                    align-items: center !important;
+                }
+
+                .ant-select-selection-placeholder {
+                    color: #9ca3af;
+                }
+
+                .ant-picker {
+                    width: 100%;
+                    height: 2.5rem;
+                    padding: 0.5rem 0.75rem;
+                    box-sizing: border-box;
+                    display: flex;
+                    align-items: center;
+
+                    .ant-picker-input {
+                        display: flex;
+                        align-items: center;
+
+                        >input {
+                            font-size: 0.875rem;
+
+                            &::placeholder {
+                                color: #9ca3af;
+                            }
+                        }
+                    }
+
+                    .ant-picker-suffix {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+            }
+
+            .dateRow {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+                margin: 0;
+
+                .dateField {
+                    margin-bottom: 1rem !important;
+                }
+            }
+
+            // New Fee Section Styles
+            .feeSection {
+                margin-top: 1.5rem;
+                padding-top: 1.5rem;
+                border-top: 2px solid #f1f5f9;
+
+                .sectionTitle {
+                    font-size: 1rem;
+                    color: $color-text-main;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    
+                    &::before {
+                        content: '';
+                        display: inline-block;
+                        width: 4px;
+                        height: 16px;
+                        background-color: $color-teal;
+                        border-radius: 2px;
+                    }
+                }
+            }
+
+            .feeToggleContainer {
+                background-color: #f8fafc;
+                border: 1px solid $color-border;
+                border-radius: $radius-base;
+                padding: 1rem;
+                margin-top: 1rem;
+
+                .feeSummary {
+                    display: flex;
+                    align-items: center;
+                    background-color: rgba($color-teal, 0.08);
+                    border: 1px solid rgba($color-teal, 0.15);
+                    padding: 0.75rem;
+                    border-radius: $radius-base;
+                    margin-top: 0.75rem;
+                    color: $color-text-main;
+                    font-size: 0.85rem;
+                }
+            }
+        }
+
+        .modalFooter {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+
+            .cancelButton {
+                height: 2.75rem;
+                padding: 0 1.5rem;
+                border-radius: $radius-base;
+                font-size: 0.9rem;
+                font-weight: 500;
+                border: 1px solid $color-border;
+                background-color: white;
+                color: $color-text-main;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                &:hover {
+                    border-color: $color-navy;
+                    color: $color-navy;
+                    background-color: #f8fafc;
+                    transform: translateY(-1px);
+                }
+            }
+
+            .submitButton {
+                height: 2.75rem;
+                padding: 0 1.5rem;
+                border-radius: $radius-base;
+                font-size: 0.9rem;
+                font-weight: 500;
+                background-color: $color-teal;
+                border: 1px solid $color-teal;
+                color: white;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                &:hover {
+                    background-color: $color-teal-hover !important;
+                    border-color: $color-teal-hover !important;
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                }
+
+                &:disabled {
+                    background-color: #cbd5e1;
+                    border-color: #cbd5e1;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+            }
+        }
+
+        // Review Step Styles
+        .reviewStep {
+            animation: fadeIn 0.3s ease;
+
+            .reviewContent {
+                margin-top: 0.5rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.25rem;
+            }
+
+            .reviewSectionGroup {
+                background-color: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: $radius-base;
+                padding: 1.25rem;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                }
+
+                .groupHeader {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.625rem;
+                    margin-bottom: 1rem;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: $color-text-main;
+                    padding-bottom: 0.75rem;
+                    border-bottom: 2px solid #f1f5f9;
+
+                    :global(.anticon) {
+                        font-size: 1.125rem;
+                        color: $color-teal;
+                    }
+                }
+
+                .infoGrid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 0.875rem;
+                }
+
+                .infoRow {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 0.9rem;
+                    padding: 0.5rem;
+                    border-radius: 6px;
+                    transition: background-color 0.2s ease;
+
+                    &:hover {
+                        background-color: #f8fafc;
+                    }
+
+                    .label {
+                        color: $color-text-sub;
+                        font-weight: 500;
+                    }
+
+                    .value {
+                        color: $color-text-main;
+                        font-weight: 600;
+                        text-align: right;
+                    }
+
+                    .statusBadge {
+                        margin: 0;
+                        padding: 0 8px;
+                        height: 22px;
+                        line-height: 22px;
+                        border-radius: 11px;
+                        font-size: 0.75rem;
+                        font-weight: 500;
+
+                        &.statusActive {
+                            background-color: rgba(#10b981, 0.1);
+                            color: #10b981;
+                            border: 1px solid rgba(#10b981, 0.2);
+                        }
+
+                        &.statusInactive {
+                            background-color: rgba(#ef4444, 0.1);
+                            color: #ef4444;
+                            border: 1px solid rgba(#ef4444, 0.2);
+                        }
+                    }
+                }
+            }
+
+            .feeCard {
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                border: 1px solid #bae6fd;
+                box-shadow: 0 2px 8px rgba(14, 116, 144, 0.08);
+
+                .groupHeader {
+                    margin-bottom: 1rem;
+                    color: $color-navy;
+                    border-bottom-color: #bae6fd;
+                }
+
+                .infoRow {
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.7);
+                    }
+
+                    &:last-child {
+                        margin-top: 0.75rem;
+                        padding-top: 0.875rem;
+                        border-top: 2px solid #bae6fd;
+                        background-color: rgba(255, 255, 255, 0.5);
+
+                        .label,
+                        .value {
+                            font-weight: 700;
+                            font-size: 1.05rem;
+                            color: $color-navy;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Select Dropdown Styles (Global)
+.selectDropdown {
+    :global {
+        .ant-select-item {
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            margin: 0.125rem 0.25rem;
+
+            // Disabled option - billing cycle validation
+            &.ant-select-item-option-disabled {
+                cursor: not-allowed !important;
+                background-color: transparent !important;
+                opacity: 1 !important;
+                
+                &:hover {
+                    background-color: transparent !important;
+                }
+            }
+
+            // Selected option
+            &.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+                background-color: $color-teal;
+                color: white;
+                font-weight: 500;
+
+                .checkoutIcon {
+                    color: white !important;
+                }
+            }
+
+            // Hover (only for enabled options)
+            &:not(.ant-select-item-option-disabled):hover {
+                background-color: $color-teal !important;
+                color: white !important;
+
+                .checkoutIcon {
+                    color: white !important;
+                }
+            }
+        }
+    }
+}
+
