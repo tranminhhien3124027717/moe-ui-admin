@@ -1,0 +1,8 @@
+@use '../../../assets/styles/variables' as *;
+
+.accountContainer {
+  padding: 32px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}

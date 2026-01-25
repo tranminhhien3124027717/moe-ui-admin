@@ -1,0 +1,18 @@
+// IntroduceLayout.module.scss
+@use '../assets/styles/variables' as *;
+
+.layoutWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+  background-color: $color-bg-body;
+  font-family: $font-family;
+  
+}
+
+.mainContent {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

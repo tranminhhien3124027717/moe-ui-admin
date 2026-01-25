@@ -1,0 +1,72 @@
+@use '../../../../assets/styles/variables' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .backBtn {
+      font-size: 20px;
+      padding: 8px;
+      color: #64748b;
+
+      &:hover {
+        color: #0f766e;
+        background: #f0fdfa;
+      }
+    }
+
+    .titleRow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+
+      .pageTitle {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 !important;
+      }
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #64748b;
+    }
+  }
+
+  .headerActions {
+    display: flex;
+    gap: 12px;
+
+    button {
+      height: 42px;
+      padding: 0 20px;
+      font-weight: 600;
+      border-radius: 10px;
+
+      &:first-child {
+        border-color: #e2e8f0;
+        color: #64748b;
+
+        &:hover {
+          border-color: #0f766e;
+          color: #0f766e;
+        }
+      }
+
+      &:last-child {
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+      }
+    }
+  }
+}

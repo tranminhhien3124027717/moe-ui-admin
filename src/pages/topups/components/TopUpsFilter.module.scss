@@ -1,0 +1,401 @@
+@use "../../../assets/styles/_variables.scss" as *;
+
+.filterCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  font-family: $font-family2;
+
+  .filtersRow {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    align-items: center;
+
+    @media (max-width: 1200px) {
+      gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .searchWrapper {
+      flex: 2;
+      min-width: 280px;
+      border-radius: 16px;
+
+      @media (max-width: 1200px) {
+        flex: 1.5;
+        min-width: 250px;
+      }
+
+      @media (max-width: 768px) {
+        flex: 1;
+        min-width: 100%;
+      }
+
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      // Ngăn nội dung con làm tràn chiều cao
+
+      .mainSearch {
+        height: 46px !important; // Cho phép input chiếm trọn 36px của cha
+        line-height: normal; // Reset line-height để không bị đẩy
+        padding: 0 12px;
+        border-radius: 13px;
+        background-color: #fffdfd;
+        border: 1px solid #e2e8f0;
+        font-size: 15px;
+        width: 100%;
+
+        :global {
+          input {
+            height: 100% !important;
+            line-height: 36px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e293b;
+            background-color: transparent !important;
+
+            &::placeholder {
+              color: #94a3b8;
+              font-size: 13px;
+            }
+          }
+        }
+
+        &:hover,
+        &:focus-within {
+          border-color: #1e3a8a;
+          box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.05);
+        }
+      }
+    }
+
+    .filterItem {
+      display: flex;
+      align-items: center;
+      min-width: 150px;
+
+      .filterSelect {
+        width: 100%;
+        height: 46px;
+        border-radius: 13px;
+
+        :global {
+          .ant-select-selector {
+            background-color: #fffdfd !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 13px !important;
+            height: 48px !important;
+            display: flex;
+            align-items: center;
+            padding: 0 16px !important;
+            box-shadow: none !important;
+          }
+
+          .ant-select-selector:hover {
+            border-color: #cbd5e1 !important;
+          }
+
+          .ant-select-selection-item {
+            line-height: normal !important;
+            color: #000000d0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            background: transparent !important;
+            border: none !important;
+            padding-left: 8px !important;
+          }
+
+          .ant-select-selection-placeholder,
+          .ant-select-placeholder {
+            line-height: normal !important;
+            color: #000000e0 !important;
+            font-size: 14px !important;
+            opacity: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            inset-inline-start: 16px !important;
+            visibility: visible !important;
+          }
+
+          .ant-select-content {
+            display: flex !important;
+            align-items: center !important;
+            height: 100% !important;
+            padding-left: 5px;
+          }
+
+          .ant-select-selection-search {
+            inset-inline-start: 16px !important;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+
+      .customOption {
+        display: flex;
+        align-items: center;
+        padding: 4px 0;
+      }
+    }
+
+    .clearBtn {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      height: auto;
+      font-size: 13px;
+
+      &:hover {
+        background: transparent;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .filtersRow2 {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 15px 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+
+    @media (max-width: 1200px) {
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      padding: 12px 0;
+    }
+
+    .periodSection {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      flex-wrap: wrap;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .periodLabel {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+
+        @media (max-width: 768px) {
+          margin-bottom: 4px;
+        }
+      }
+
+      .periodButtons {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+
+        @media (max-width: 768px) {
+          gap: 6px;
+          width: 100%;
+        }
+
+        .periodBtn {
+          height: 28px;
+          padding: 0 12px;
+          border-radius: $radius-lg;
+          font-size: 12px;
+          font-weight: 500;
+          border: 1px solid #e2e8f0;
+          background: #ffffff;
+          color: #64748b;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          line-height: 28px;
+
+          &:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            color: #475569;
+          }
+
+          &:active {
+            border-color: #0f766e;
+            background: #ecfdf5;
+            color: #0f766e;
+          }
+
+          @media (max-width: 1024px) {
+            font-size: 11px;
+            padding: 0 10px;
+            height: 26px;
+            line-height: 26px;
+          }
+
+          @media (max-width: 768px) {
+            flex: 1;
+            min-width: calc(33.33% - 4px);
+            text-align: center;
+            font-size: 11px;
+            padding: 0 6px;
+            height: 32px;
+            line-height: 32px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          @media (max-width: 480px) {
+            min-width: calc(50% - 3px);
+            font-size: 10px;
+            padding: 0 4px;
+            height: 30px;
+            line-height: 30px;
+          }
+        }
+
+        .activePeriodBtn {
+          border-color: #162f69;
+          background: #f0f4ff;
+          color: #162f69;
+          font-weight: 600;
+
+          &:hover {
+            border-color: #162f69;
+            background: #e8efff;
+            color: #162f69;
+          }
+        }
+      }
+    }
+
+    .dateRangeSection {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+
+      @media (max-width: 768px) {
+        width: 100%;
+        gap: 8px;
+      }
+
+      .dateInput {
+        border-radius: 13px !important;
+        height: 46px !important;
+        :global {
+          .ant-picker {
+            height: 46px !important;
+            padding: 0 10px !important;
+
+            border: 1px solid #e2e8f0 !important;
+            background-color: #fffdfd !important;
+            font-size: 12px !important;
+            display: flex;
+            align-items: center;
+
+            .ant-picker-input {
+              display: flex;
+              align-items: center;
+
+              > input {
+                font-size: 12px !important;
+                color: #000000d0 !important;
+                height: 100%;
+                padding: 0;
+
+                &::placeholder {
+                  color: #94a3b8 !important;
+                  font-weight: 500;
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+
+          .ant-picker:hover {
+            border-color: #cbd5e1 !important;
+          }
+
+          .ant-picker-focused {
+            border-color: #0f766e !important;
+            box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.05) !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          flex: 1;
+          min-width: 120px;
+        }
+      }
+      .dateSeparator {
+        color: #94a3b8;
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .filterFooter {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding-top: 0;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .showingText {
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .clearBtn {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      height: auto;
+      font-size: 14px;
+
+      &:hover {
+        background: transparent;
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+@use '../../../../assets/styles/variables' as *;
+
+.tableWrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background: #fff;
+
+  .customTable {
+    :global {
+      .ant-table-thead > tr > th {
+        background-color: #ffffff;
+        font-weight: 400;
+        color: #64748b;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        padding: 16px 24px;
+        border-bottom: 2px solid #f1f5f9;
+        white-space: nowrap;
+
+        &::before {
+          display: none !important;
+        }
+      }
+
+      .ant-table-tbody > tr > td {
+        padding: 20px 24px;
+        border-bottom: 1px solid #f1f5f9;
+        background-color: #fff;
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      .ant-table-tbody > tr {
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover > td {
+          background-color: #f8fafc !important;
+        }
+      }
+
+      .ant-table-tbody > tr:last-child > td {
+        border-bottom: none;
+      }
+
+      .ant-table-pagination.ant-pagination {
+        margin: 16px 24px !important;
+        width: auto;
+      }
+    }
+  }
+
+  // Column specific styles
+  .colName {
+    font-weight: 400;
+    color: #000000;
+    font-size: 14px;
+  }
+
+  .colNric {
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  .colText {
+    color: #334155;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .colBalance {
+    font-weight: 500;
+    color: #000000;
+    font-size: 14px;
+  }
+
+  .colEducation,
+  .colStatus {
+    color: #66768c;
+    font-size: 14px;
+  }
+
+  .colDateGroup {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.4;
+
+    .date {
+      color: #66768c;
+      font-size: 12px;
+    }
+
+    .time {
+      color: #66768c;
+      font-size: 12px;
+    }
+  }
+
+  .colCourses {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #475569;
+    font-weight: 600;
+    font-size: 13px;
+
+    svg {
+      font-size: 14px;
+      color: #64748b;
+    }
+  }
+}
+
+.customOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: #334155;
+}

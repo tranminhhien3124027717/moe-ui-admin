@@ -1,0 +1,267 @@
+@use "../../../../../assets/styles/_variables.scss";
+
+.accountsModal {
+  :global(.ant-modal-header) {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 20px;
+    flex-shrink: 0;
+
+    :global(.ant-modal-title) {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0f766e;
+    }
+  }
+
+  :global(.ant-modal-content) {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+  }
+
+  :global(.ant-modal-body) {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.modalBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+.description {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.description :global(p) {
+  margin: 0;
+}
+
+.description :global(strong) {
+  color: #334155;
+  font-weight: 600;
+}
+
+.summarySection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.summaryCard {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.summaryLabel {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summaryValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #059669;
+}
+
+.searchSection {
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+
+  &:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+  }
+
+  :global(.ant-input) {
+    &::placeholder {
+      color: #94a3b8;
+    }
+  }
+}
+
+.accountsList {
+  margin-bottom: 0;
+  padding-right: 4px;
+}
+
+.accountItem {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.accountHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.accountNumber {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.nricText {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.balance {
+  font-size: 12px;
+  color: #64748b;
+  text-align: right;
+
+  strong {
+    display: block;
+    font-size: 16px;
+    color: #059669;
+    margin-top: 2px;
+  }
+}
+
+.accountDetails {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.detailRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detailLabel {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detailValue {
+  font-size: 13px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.topUpInfo,
+.newBalanceInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topUpLabel,
+.newBalanceLabel {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.topUpValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: #059669;
+}
+
+.newBalanceValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: #059669;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e2e8f0;
+  background-color: #fff;
+  flex-shrink: 0;
+
+  .cancelBtn {
+    min-width: 120px;
+    height: 40px;
+    border-radius: 8px;
+  }
+
+  :global(.ant-btn-primary) {
+    background-color: #0f766e;
+    border-color: #0f766e;
+    min-width: 100px;
+    height: 40px;
+    border-radius: 8px;
+
+    &:hover {
+      background-color: #0d5f5b;
+      border-color: #0d5f5b;
+    }
+  }
+}
