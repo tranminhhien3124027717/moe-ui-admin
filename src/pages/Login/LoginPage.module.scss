@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   VARIABLES (Admin Theme)
+   - Uses dark slate/blue tones to convey authority and professionalism.
+   - Distinct from the Student Portal's teal theme.
+   ========================================================================== */
+$primary-color: #334155; // Slate-700 (Dark Blue/Grey)
+$primary-hover: #1e293b; // Slate-800
+$accent-color: #38bdf8;  // Sky-400 (For text highlights)
+$bg-light: #f1f5f9;
+$text-main: #0f172a;
+$text-light: #64748b;
+$border-color: #cbd5e1;
+$font-family: 'Inter', sans-serif;
+
+/* ==========================================================================
+   MIXINS
+   - Reusable styles for form inputs to maintain consistency.
+   ========================================================================== */
+@mixin input-base-style {
+  border-radius: 6px; // Slightly sharper corners than Student portal
+  padding: 12px 16px;
+  border-color: $border-color;
+  background-color: white;
+  transition: all 0.3s ease;
+  font-size: 15px;
+
+  &:hover, &:focus, &:focus-within {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+
+  .fieldIcon {
+    color: $text-light;
+    margin-right: 10px;
+  }
+}
+
+/* ==========================================================================
+   MAIN LAYOUT CONTAINER
+   - Flexbox layout for the split-screen design.
+   ========================================================================== */
+.loginContainer {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  font-family: $font-family;
+  overflow: hidden;
+
+  /* --------------------------------------------------------------------------
+     LEFT PANEL: Branding & Visuals
+     - Occupies 55% of the screen.
+     - Contains the background image and hero text.
+     - Hidden on mobile/tablet devices (< 992px).
+     -------------------------------------------------------------------------- */
+  .leftPanel {
+    width: 55%; 
+    flex: 0 0 55%; 
+    position: relative;
+    background-image: url('../../assets/images/Image\ \(8\).jpg'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+
+    @media (max-width: 992px) {
+      display: none; // Hide on smaller screens
+    }
+
+    // Dark Gradient Overlay for text readability
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+      z-index: 1;
+    }
+
+    .brandOverlay {
+      position: relative;
+      z-index: 2;
+      padding: 80px;
+      color: white;
+
+      .brandContent {
+        // Admin Badge Style
+        .logoBadge {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
+          padding: 6px 14px;
+          border-radius: 4px; 
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          margin-bottom: 32px;
+          font-weight: 600;
+          font-size: 14px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: #e2e8f0;
+        }
+
+        .heroTitle {
+          font-size: 3.5rem;
+          font-weight: 800;
+          line-height: 1.1;
+          margin-bottom: 20px;
+          color: white !important;
+
+          .highlight {
+            color: $accent-color;
+          }
+        }
+
+        .heroSubtitle {
+          font-size: 1.125rem;
+          color: #94a3b8 !important;
+          max-width: 80%;
+          line-height: 1.6;
+          display: block;
+        }
+      }
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     RIGHT PANEL: Login Form Area
+     - Occupies 45% of the screen on desktop.
+     - Expands to 100% on mobile/tablet.
+     -------------------------------------------------------------------------- */
+  .rightPanel {
+    width: 45%;
+    flex: 0 0 45%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+
+    @media (max-width: 992px) {
+      width: 100%;
+      flex: 1;
+    }
+
+    .formContainer {
+      width: 100%;
+      max-width: 380px; // Compact width for cleaner look
+      z-index: 2;
+
+      // Form Header (Logo & Title)
+      .formHeader {
+        text-align: left; 
+        margin-bottom: 32px;
+
+        .mobileLogo {
+          display: none;
+          margin-bottom: 20px;
+          cursor: pointer;
+          @media (max-width: 992px) { display: inline-block; }
+        }
+
+        .welcomeTitle {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: $text-main;
+          margin-bottom: 8px;
+        }
+
+        .welcomeSub {
+          font-size: 0.95rem;
+          color: $text-light;
+        }
+      }
+
+      // Input Fields Styling
+      .loginForm {
+        .customInput {
+          @include input-base-style;
+        }
+
+        // Specific override for AntD Password Input structure
+        :global {
+          .ant-input-password { 
+            @include input-base-style; 
+            padding: 12px 16px; 
+            input { background: transparent; height: auto; } 
+          }
+        }
+
+        // Actions Row (Checkbox)
+        .formActions {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 24px;
+          
+          .customCheckbox {
+            color: $text-light;
+            font-size: 14px;
+          }
+        }
+
+        // Submit Button Styling
+        .submitButton {
+          height: 48px;
+          border-radius: 6px;
+          font-size: 15px;
+          font-weight: 600;
+          background-color: $primary-color;
+          border-color: $primary-color;
+          transition: all 0.2s;
+          
+          &:hover {
+            background-color: $primary-hover;
+            border-color: $primary-hover;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          }
+        }
+      }
+    }
+  }
+}

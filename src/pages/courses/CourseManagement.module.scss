@@ -1,0 +1,262 @@
+@use '../../assets/styles/_variables' as *;
+
+.courseManagementContainer {
+    padding: 1.5rem;
+    background-color: $color-bg-body;
+    min-height: 100%;
+
+    .pageHeader {
+        margin-bottom: 32px;
+
+        .headerTop {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+
+            .pageTitle {
+                font-size: 24px;
+                font-weight: 700;
+                color: $color-text-main;
+                margin: 0;
+            }
+
+            .addButton {
+                height: 2.5rem;
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                padding: 0.5rem 1rem;
+                border-radius: $radius-base;
+                font-weight: 500;
+                background-color: $color-teal;
+                display: flex;
+                box-shadow: none;
+                align-items: center;
+                gap: 8px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background-color: darken($color-teal, 5%);
+                }
+            }
+        }
+
+        .pageDescription {
+            font-size: 14px;
+            color: $color-text-sub;
+            margin: 0;
+        }
+    }
+
+    .searchSection {
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+
+        .searchInput {
+            width: 100%;
+            height: 44px;
+            border-radius: $radius-base;
+            background-color: $color-bg-white;
+            border-color: $color-border;
+
+            &:hover,
+            &:focus {
+                border-color: $color-navy;
+            }
+
+            :global {
+                .ant-input {
+                    font-size: 14px;
+                }
+            }
+
+            .searchIcon {
+                color: $color-text-sub;
+                font-size: 16px;
+            }
+        }
+
+
+    }
+
+    .actionButtons {
+        display: flex !important;
+        min-width: fit;
+        gap: 0.5rem;
+        margin-bottom: 16px;
+
+        .importButton {
+            height: 2.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: $radius-base;
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            border-color: $color-border;
+            color: $color-text-main;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                border-color: $color-navy;
+                color: $color-navy;
+            }
+        }
+    }
+
+    .loadingContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+        background-color: $color-bg-white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-sm;
+    }
+
+    .tableSection {
+        background-color: $color-bg-white;
+        border-radius: $radius-lg;
+        padding: 24px;
+        box-shadow: $shadow-sm;
+
+        .courseTable {
+            :global {
+                .ant-table-thead>tr>th {
+                    background-color: #f8fafc;
+                    color: $color-text-main;
+                    font-weight: 600;
+                    font-size: 13px;
+                    border-bottom: 1px solid $color-border;
+                    padding: 16px 16px;
+
+                    &::before {
+                        display: none;
+                    }
+                }
+
+                .ant-table-tbody>tr {
+                    transition: background-color 0.2s ease;
+
+                    &:hover {
+                        background-color: #f8fafc;
+                        cursor: pointer;
+                    }
+
+                    >td {
+                        padding: 16px 16px;
+                        border-bottom: 1px solid #f1f5f9;
+                        font-size: 14px;
+                        color: $color-text-main;
+                    }
+                }
+
+                .ant-table-tbody>tr:last-child>td {
+                    border-bottom: none;
+                }
+            }
+
+            .columnCourseId {
+                color: $color-text-sub;
+                font-size: 13px;
+            }
+
+            .columnCourseName {
+                font-weight: 500;
+                color: $color-text-main;
+            }
+
+            .columnProvider {
+                .providerText {
+                    color: #2563eb;
+                    font-size: 13px;
+                }
+            }
+
+            .columnMode {
+                color: $color-text-sub;
+                font-size: 13px;
+            }
+
+            .columnDate {
+                color: $color-text-sub;
+                font-size: 13px;
+            }
+
+            .columnTotalFee {
+                font-weight: 600;
+                color: $color-text-main;
+            }
+
+            .columnEnrolled {
+                color: $color-text-sub;
+                font-size: 13px;
+            }
+
+            .tagRecurring {
+                background-color: #ede9fe;
+                color: #7c3aed;
+                border: none;
+                border-radius: 9999px;
+                padding: 4px 12px;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .tagOneTime {
+                background-color: #dbeafe;
+                color: #2563eb;
+                border: none;
+                border-radius: 9999px;
+                padding: 4px 12px;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .tagGray {
+                background-color: hsl(210 20% 94%);
+                color: hsl(222 47% 11%);
+                border: none;
+                border-radius: 9999px;
+                padding: 4px 12px;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    @media (max-width: $screen-md) {
+        padding: 20px;
+
+        .pageHeader {
+            .headerTop {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+
+                .actionButtons {
+                    width: 100%;
+
+                    button {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+
+        .searchSection {
+            .searchInput {
+                max-width: 100%;
+            }
+        }
+
+        .tableSection {
+            padding: 16px;
+            overflow-x: auto;
+        }
+    }
+}

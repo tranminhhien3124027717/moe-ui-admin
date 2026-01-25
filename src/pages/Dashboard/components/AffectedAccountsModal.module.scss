@@ -1,0 +1,205 @@
+@use '../../../assets/styles/_variables' as *;
+
+.modal {
+    :global {
+        .ant-modal-content {
+            border-radius: 12px;
+            padding: 0;
+        }
+
+        .ant-modal-body {
+            padding: 0;
+        }
+    }
+}
+
+.modalContent {
+    padding: 32px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modalTitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.modalSubtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.summaryBox {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px;
+    background: linear-gradient(135deg, $color-navy 0%, $color-teal 100%) ;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    .summaryItem {
+        label {
+            display: block;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 4px;
+        }
+
+        .summaryValue {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+        }
+    }
+}
+
+.searchBox {
+    margin-bottom: 16px;
+
+    :global {
+        .ant-input-affix-wrapper {
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+    }
+}
+
+.accountsList {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+.accountCard {
+    background: white;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: #667eea;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+    }
+}
+
+.accountHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+
+    .accountNumber {
+        font-size: 14px;
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .accountName {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a1a;
+        flex: 1;
+    }
+
+    .accountNric {
+        font-size: 14px;
+        color: #666;
+        font-family: monospace;
+    }
+}
+
+.accountDetails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+
+    .detailRow {
+        .label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .value {
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+    }
+}
+
+.accountBalance {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+
+    .balanceItem {
+        label {
+            display: block;
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        span {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .balanceValue {
+            color: #0f1729;
+        }
+
+        .topupValue {
+            color: #1a9949;
+        }
+
+        .newBalanceValue {
+            color: #1a9949;
+        }
+    }
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #f0f0f0;
+
+    .closeBtn {
+        min-width: 100px;
+    }
+}

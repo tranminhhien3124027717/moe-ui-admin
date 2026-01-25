@@ -1,0 +1,169 @@
+@use "../../../assets/styles/_variables.scss" as *;
+
+.tableWrapper {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: $font-family2;
+
+  .paginationWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+  }
+
+  .rowPerPageLabel {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .rowPerPageSelect {
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #334155;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: #94a3b8;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #162f69;
+      box-shadow: 0 0 0 3px rgba(22, 47, 105, 0.1);
+    }
+  }
+
+  .customTable {
+    :global(.ant-table) {
+      font-size: 14px;
+      background-color: #ffffff;
+
+      .ant-table-thead > tr > th {
+        background-color: #f8fafc;
+        color: #0f172a;
+        font-weight: 600;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 12px 16px;
+
+        &:hover {
+          background-color: #f1f5f9;
+        }
+      }
+
+      .ant-table-tbody > tr {
+        &:hover > td {
+          background-color: #f8fafc;
+        }
+
+        > td {
+          padding: 12px 16px;
+          border-bottom: 1px solid #e2e8f0;
+        }
+      }
+    }
+  }
+
+  .nameColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nameRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .newTag {
+    :global(.ant-tag) {
+      margin: 0 !important;
+      padding: 2px 8px !important;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      height: fit-content;
+    }
+  }
+
+  .nric {
+    color: #94a3b8;
+    font-size: 12px;
+  }
+
+  .colName {
+    color: #0f172a;
+    font-weight: 500;
+  }
+
+  .colText {
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  .colAmount {
+    color: #059669;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .colDateGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .date {
+      color: #0f172a;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .time {
+      color: #94a3b8;
+      font-size: 12px;
+    }
+  }
+
+  .typeTag {
+    :global(.ant-tag) {
+      margin: 0;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .statusTag {
+    :global(.ant-tag) {
+      margin: 0;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  @media (max-width: 768px) {
+    :global(.ant-table-wrapper) {
+      overflow-x: auto;
+    }
+
+    .colDateGroup {
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+}

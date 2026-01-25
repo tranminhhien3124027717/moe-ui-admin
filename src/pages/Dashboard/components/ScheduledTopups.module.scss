@@ -1,0 +1,221 @@
+.cardContainer {
+    background: #ffffff;
+    border-radius: 20px; // Larger radius like Student UI
+    padding: 32px; // More padding
+    border: none; // Remove hard border
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05); // Soft shadow
+
+    // --- Header ---
+    .cardHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+
+        .headerLeft {
+            display: flex;
+            gap: 16px;
+
+            .iconBox {
+                width: 40px;
+                height: 40px;
+                background-color: #f0fdfa; // Light teal bg
+                color: #0f766e; // Teal icon
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+            }
+
+            .title {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 700;
+                color: #0f172a;
+            }
+
+            .subTitle {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #64748b;
+            }
+        }
+
+        .viewAllBtn {
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            height: 32px;
+            
+            &:hover {
+                color: #0f766e;
+                border-color: #0f766e;
+                background: #f0fdfa;
+            }
+        }
+    }
+
+    // --- Filter Switch ---
+    .filterControl {
+        display: inline-flex;
+        background-color: #f1f5f9; // Grey background for the container
+        padding: 4px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+
+        .toggleBtn {
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: #334155;
+            }
+
+            &.active {
+                background: #ffffff; // White active button
+                color: #0f172a;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+
+    // --- Table & Wrapper for "Layer inside Layer" effect ---
+    .tableWrapper {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px; // Inner radius
+        overflow: hidden;
+        overflow-x: auto; // Allow horizontal scroll
+    }
+
+    // --- Responsive ---
+    @media (max-width: 768px) {
+        padding: 20px;
+        border-radius: 16px;
+
+        .cardHeader {
+            flex-direction: column;
+            gap: 16px;
+            align-items: stretch;
+
+            .headerLeft {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .viewAllBtn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .filterControl {
+            width: 100%;
+            display: flex;
+            
+            .toggleBtn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    }
+
+    // --- Table Styling ---
+    .customTable {
+        :global {
+            .ant-table {
+                border-radius: 0; 
+            }
+            .ant-table-thead > tr > th {
+                background: #f8fafc;
+                color: #475569;
+                font-weight: 700;
+                font-size: 12px;
+                text-transform: uppercase;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 16px 24px;
+                
+                // Remove individual radius
+                &:first-child { border-radius: 0; }
+                &:last-child { border-radius: 0; }
+            }
+
+            .ant-table-tbody > tr > td {
+                padding: 16px 24px;
+                border-bottom: 1px solid #f1f5f9;
+                vertical-align: middle; // Vertically center content
+            }
+
+            .ant-table-tbody > tr:hover > td {
+                background: #f8fafc !important;
+            }
+        }
+    }
+
+    // --- Column Content ---
+    .ruleCell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .ruleName {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .accountCount {
+            font-size: 12px;
+            color: #64748b;
+        }
+    }
+
+    .amountText {
+        color: #16a34a; // Green for money
+        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .dateTimeCell {
+        display: flex;
+        flex-direction: column;
+        align-items: center; // Center content
+        font-size: 13px;
+        
+        .date {
+            color: #64748b; // Uniform gray
+            font-weight: 500;
+        }
+        .time {
+            color: #64748b; // Uniform gray
+            font-weight: 500;
+            font-size: 13px;
+        }
+    }
+
+    .statusBadge {
+        display: inline-block;
+        background: #f1f5f9;
+        color: #475569;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+}

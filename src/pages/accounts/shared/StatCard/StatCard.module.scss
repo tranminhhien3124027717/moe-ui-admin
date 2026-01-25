@@ -1,0 +1,68 @@
+@use '../../../../assets/styles/variables' as *;
+
+.statCard {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .statIconWrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background: #f8fafc;
+    color: #0f766e;
+  }
+
+  .statContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .statLabel {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .statValue {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  // Type variants
+  &.balance .statIconWrapper {
+    background: #ecfdf5;
+    color: #059669;
+  }
+
+  &.courses .statIconWrapper {
+    background: #eff6ff;
+    color: #2563eb;
+  }
+
+  &.fees .statIconWrapper {
+    background: #fef3c7;
+    color: #f59e0b;
+  }
+
+  &.warning .statIconWrapper {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+}
