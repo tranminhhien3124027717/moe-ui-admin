@@ -10,8 +10,9 @@
 
   .filtersRow {
     display: grid;
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-    gap: 20px 24px;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 20px;
     align-items: flex-end;
     width: 100%;
 
@@ -159,6 +160,7 @@
     }
 
     .inlineField {
+      grid-column: span 3;
       position: relative;
 
       .fieldOverlay {
@@ -213,12 +215,12 @@
     }
 
     .dateItem {
-      grid-column: span 2;
+      grid-column: span 4;
       min-width: 200px;
     }
 
     .rangeItem {
-      grid-column: span 3;
+      grid-column: span 6;
       min-width: 260px;
     }
 
