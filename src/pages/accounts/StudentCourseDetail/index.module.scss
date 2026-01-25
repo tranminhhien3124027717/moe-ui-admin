@@ -1,0 +1,145 @@
+@use '../../../assets/styles/variables' as *;
+
+.studentCourseDetailContainer {
+  padding: 24px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+
+  .loadingContainer,
+  .emptyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .headerLeft {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .backBtn {
+        font-size: 20px;
+        padding: 8px;
+        color: #64748b;
+
+        &:hover {
+          color: #0f766e;
+          background: #f0fdfa;
+        }
+      }
+
+      .titleRow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+
+        .pageTitle {
+          font-size: 28px;
+          font-weight: 700;
+          color: #0f172a;
+          margin: 0 !important;
+        }
+      }
+
+      .subtitle {
+        font-size: 14px;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .statsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .statCard {
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e2e8f0;
+
+      :global(.ant-card-body) {
+        padding: 20px;
+      }
+
+      .statContent {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .statIcon {
+          width: 56px;
+          height: 56px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .statDetails {
+          flex: 1;
+
+          .statLabel {
+            font-size: 14px;
+            color: $color-text-sub;
+            margin-bottom: 4px;
+          }
+
+          .statValue {
+            font-size: 24px;
+            font-weight: 600;
+            color: $color-text-main;
+          }
+        }
+      }
+    }
+  }
+
+  .infoCard,
+  .chargesCard {
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 24px;
+
+    :global {
+      .ant-card-head {
+        border-bottom: 2px solid #f1f5f9;
+
+        .ant-card-head-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: $color-text-main;
+        }
+      }
+
+      .ant-table {
+        .ant-table-thead > tr > th {
+          background-color: #f8fafc;
+          font-weight: 600;
+          color: $color-text-main;
+        }
+
+        .ant-table-tbody > tr {
+          &:hover {
+            background-color: #f8fafc;
+          }
+        }
+      }
+    }
+  }
+}

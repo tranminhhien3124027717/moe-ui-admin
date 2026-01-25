@@ -1,0 +1,118 @@
+// TopUpsManagement Module Styles
+.container {
+  padding: 24px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+
+  .content {
+
+    margin: 0 auto;
+
+    .statCards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+
+      .statCard {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          border-color: #cbd5e1;
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+
+          &.primary {
+            background-color: rgba(22, 47, 105, 0.1);
+            color: #162f69;
+          }
+
+          &.success {
+            background-color: rgba(5, 150, 105, 0.1);
+            color: #059669;
+          }
+
+          &.warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+          }
+        }
+
+        .info {
+          flex: 1;
+
+          .label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+          }
+
+          .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1;
+          }
+
+          .subtext {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Utilities
+@media (max-width: 768px) {
+  .container {
+    .content {
+      .statCards {
+        .statCard {
+          padding: 16px;
+
+          .icon {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+          }
+
+          .info {
+            .value {
+              font-size: 24px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

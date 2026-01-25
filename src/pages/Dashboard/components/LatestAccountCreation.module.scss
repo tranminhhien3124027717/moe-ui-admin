@@ -1,0 +1,117 @@
+.cardContainer {
+    background: #ffffff;
+    border-radius: 20px; // Increased radius
+    padding: 32px; // Increased padding
+    border: none;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+
+    // --- Header ---
+    .cardHeader {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 24px;
+
+        .headerLeft {
+            display: flex;
+            gap: 16px;
+
+            .iconBox {
+                width: 40px;
+                height: 40px;
+                background-color: #f0fdfa; // Light teal
+                color: #0f766e; // Teal
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+            }
+
+            .title {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 700;
+                color: #0f172a;
+            }
+
+            .subTitle {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #64748b;
+            }
+        }
+    }
+
+    // --- Table Wrapper ---
+    .tableWrapper {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px; 
+        overflow: hidden;
+        overflow-x: auto; // Allow scroll
+    }
+
+    // --- Responsive ---
+    @media (max-width: 768px) {
+        padding: 20px;
+        border-radius: 16px;
+
+        .cardHeader {
+            .headerLeft {
+                .title { font-size: 16px; }
+            }
+        }
+    }
+
+    // --- Table ---
+    .customTable {
+        :global {
+            .ant-table-thead > tr > th {
+                background: #f8fafc; // Very light grey header
+                color: #475569;
+                font-weight: 700;
+                font-size: 12px;
+                text-transform: uppercase;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 16px 24px;
+            }
+
+            .ant-table-tbody > tr > td {
+                padding: 16px 24px;
+                border-bottom: 1px solid #f1f5f9;
+                color: #334155;
+                vertical-align: middle; // Center vertical
+            }
+
+            .ant-table-tbody > tr:last-child > td {
+                border-bottom: none;
+            }
+
+            .ant-table-tbody > tr:hover > td {
+                background: #f8fafc !important;
+            }
+        }
+    }
+
+    // --- Column Styles ---
+    .nameText {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 14px;
+    }
+
+    .emailText {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .creatorText {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .dateText {
+        color: #64748b; // Match email/created by gray
+        font-weight: 400; // Normal weight like others
+        font-size: 14px;
+    }
+}

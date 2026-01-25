@@ -1,0 +1,200 @@
+@use '../../../../assets/styles/variables' as *;
+
+.tableSection {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background: #fff;
+
+  .courseTable {
+    :global {
+      .ant-table {
+        background: transparent;
+      }
+
+      .ant-table-wrapper {
+        overflow-x: auto;
+      }
+
+      .ant-table-thead > tr > th {
+        background-color: #ffffff !important;
+        border-bottom: 2px solid #f1f5f9;
+        color: #64748b;
+        font-weight: 400;
+        font-size: 14px;
+        padding: 16px 24px;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+
+        &::before { 
+          display: none !important; 
+        }
+      }
+
+      .ant-table-tbody > tr {
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        &:hover > td {
+          background: #f8fafc !important;
+        }
+
+        > td {
+          border-bottom: 1px solid #f1f5f9;
+          padding: 20px 24px;
+          font-size: 14px;
+          color: #1e293b;
+          background-color: #fff;
+          vertical-align: middle;
+          white-space: nowrap;
+        }
+      }
+
+      .ant-table-tbody > tr:last-child > td {
+        border-bottom: none;
+      }
+
+      .ant-pagination {
+        margin: 16px 24px !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .ant-pagination-total-text {
+        flex: 1;
+        order: -1;
+        color: #64748b;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .ant-pagination-options {
+        order: 999;
+      }
+
+      .ant-pagination-item {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+
+        &:hover {
+          border-color: #0f766e;
+        }
+
+        a {
+          color: #64748b;
+        }
+      }
+
+      .ant-pagination-item-active {
+        border-color: #0f766e;
+        background: #0f766e;
+
+        a {
+          color: #ffffff;
+        }
+      }
+
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        .ant-pagination-item-link {
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          color: #64748b;
+        }
+
+        &:hover .ant-pagination-item-link {
+          border-color: #0f766e;
+          color: #0f766e;
+        }
+      }
+    }
+
+    .columnCourseId {
+      min-width: 100px;
+      
+      span {
+        color: #64748b;
+        font-size: 13px;
+      }
+    }
+
+    .columnCourseName {
+      min-width: 220px;
+
+      .courseNameText {
+        font-weight: 400;
+        color: #66768c;
+        font-size: 14px;
+      }
+    }
+
+    .columnProvider {
+      min-width: 180px;
+      
+      .providerText {
+        color: #66768c;
+        font-size: 14px;
+      }
+    }
+
+    .columnDate {
+      min-width: 110px;
+
+      span {
+        color: #66768c;
+        font-size: 12px;
+      }
+    }
+
+    .columnPaymentType {
+      min-width: 120px;
+
+      span {
+        color: #334155;
+        font-size: 14px;
+      }
+    }
+
+    .columnBillingCycle {
+      min-width: 110px;
+
+      span {
+        color: #66768c;
+        font-size: 14px;
+      }
+    }
+
+    .columnTotalFee {
+      min-width: 100px;
+      text-align: right;
+
+      span {
+        font-weight: 400;
+        color: #66768c;
+        font-size: 14px;
+      }
+    }
+
+    .columnMode {
+      min-width: 120px;
+
+      span {
+        color: #66768c;
+        font-size: 14px;
+      }
+    }
+
+    .columnEnrolled {
+      min-width: 120px;
+      text-align: right;
+
+      span {
+        color: #475569;
+        font-weight: 600;
+        font-size: 13px;
+      }
+    }
+  }
+}
