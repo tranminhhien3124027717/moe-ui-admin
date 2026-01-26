@@ -1,22 +1,38 @@
 .addStudentModal {
+  // Style cho Modal Content (Bo góc và đổ bóng)
   :global {
     .ant-modal-content {
       border-radius: 16px;
-      padding: 0; 
+      padding: 0;
       overflow: hidden;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
-
+    
+    // Xử lý nút tắt modal (dấu X)
+    .ant-modal-close {
+      top: 18px;
+      right: 18px;
+      color: #64748b;
+      &:hover {
+        background-color: #f1f5f9;
+        color: #0f172a;
+      }
+    }
   }
 
+  // Header của Modal
   .header {
+    padding: 24px 24px 0 24px;
     margin-bottom: 28px;
+    
     h2 {
       font-size: 20px;
       font-weight: 700;
       color: #0f172a;
       margin: 0 0 8px 0;
     }
+    
     p {
       color: #64748b;
       font-size: 14px;
@@ -25,89 +41,177 @@
     }
   }
 
+  // Tag hiển thị trạng thái đã verify
   .verifiedTag {
-      display: block;
-      margin-top: 6px;
-      color: #059669; // Green
-      font-size: 13px;
-      font-weight: 500;
-      svg { margin-right: 4px; }
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    color: #059669; // Green-600
+    font-size: 13px;
+    font-weight: 600;
+    
+    span {
+      margin-right: 4px;
+      font-size: 14px;
+    }
   }
 
+  // Khu vực Form
   .form {
+    padding: 0 24px 24px 24px;
+
     :global {
-      .ant-form-item {
-          margin-bottom: 20px;
+      .ant-input-group-addon{
+        border-radius: 8px 0px 0px 8px !important;
       }
+
+      .ant-form-item {
+        margin-bottom: 20px;
+      }
+      
       .ant-form-item-label > label {
         font-weight: 600;
-        color: #334155;
+        color: #334155; // Slate-700
         font-size: 14px;
       }
 
-
-      // Style chung cho input
-      .ant-input, .ant-picker, .ant-select-selector {
+      // --- Style chung cho tất cả Input/Select/Picker ---
+      .ant-input,
+      .ant-picker,
+      .ant-select-selector,
+      .ant-input-group-addon {
         height: 44px;
         border-radius: 8px;
         border-color: #e2e8f0;
         color: #1e293b;
         font-size: 15px;
-        
-        &:hover, &:focus {
-            border-color: #0f766e;
-            box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.1);
+      }
+
+      .ant-picker {
+        width: 100%; // Fix lỗi DatePicker không full width
+      }
+
+      // Hiệu ứng Hover/Focus
+      .ant-input:hover,
+      .ant-input:focus,
+      .ant-picker:hover,
+      .ant-picker-focused,
+      .ant-select-selector:hover,
+      .ant-select-selector:focus {
+        border-color: #0f766e; // Teal-700
+        box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.1);
+        z-index: 1;
+      }
+
+      // --- Style cho Input bị Disable (Locked) ---
+      .ant-input[disabled],
+      .ant-picker-disabled,
+      .ant-select-disabled .ant-select-selector {
+        background-color: #f8fafc !important; // Slate-50
+        border-color: #e2e8f0 !important;
+        color: #94a3b8 !important; // Slate-400
+        cursor: not-allowed;
+
+        // Nếu có giá trị thì màu chữ đậm hơn chút để dễ đọc
+        &[value]:not([value=""]) {
+          color: #475569 !important; // Slate-600
+          font-weight: 500;
         }
       }
       
-      // Style cho input bị Disable (Màu xám)
-      .ant-input[disabled], 
-      .ant-picker-disabled {
-        background-color: #f1f5f9 !important; 
-        border-color: #e2e8f0 !important;
-        color: #94a3b8 !important; 
-        cursor: not-allowed;
-        
+      // Fix style cho DatePicker disabled inputs
+      .ant-picker-disabled input {
+         color: #475569 !important;
+         font-weight: 500;
+         cursor: not-allowed;
+      }
+    }
 
-        &[value]:not([value=""]) {
-             color: #64748b !important; 
-             font-weight: 500;
+    // --- Các Class cụ thể trong JSX ---
+
+    // 1. NRIC Input (nằm trong Space.Compact)
+    .nricInput {
+      // AntD Space.Compact sẽ tự xử lý border-radius bên phải
+      // Class này để đảm bảo style khi chưa verify
+      &:disabled {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    // 2. Nút Verify (nằm cạnh NRIC Input)
+    .verifyBtn {
+      height: 44px;
+      background-color: #0f766e;
+      border: 1px solid #0f766e;
+      // Do dùng Space.Compact nên cần bo góc phải
+      border-radius: 0 8px 8px 0 !important; 
+      font-weight: 600;
+      
+      // Kỹ thuật margin âm để border input và button dính liền đẹp hơn
+      margin-left: -1px; 
+      z-index: 2;
+
+      &:hover {
+        background-color: #115e59 !important; // Teal-800
+        border-color: #115e59 !important;
+      }
+    }
+
+    // 3. Nút Reset (thay thế nút Verify khi đã xong)
+    .resetBtn {
+      height: 44px;
+      border-radius: 0 8px 8px 0 !important;
+      color: #ef4444; // Red-500
+      border-color: #e2e8f0;
+      background-color: #fff;
+      font-weight: 600;
+      margin-left: -1px;
+      z-index: 2;
+
+      &:hover {
+        border-color: #ef4444 !important;
+        color: #dc2626 !important;
+        background-color: #fef2f2 !important; // Red-50
+      }
+    }
+
+    // 4. Các input bị khóa (Fullname, DOB, Residential)
+    .lockedInput {
+      // Style đã được định nghĩa ở global .ant-input[disabled]
+      // Thêm cursor để rõ ràng hơn
+      cursor: not-allowed;
+    }
+
+    // 5. Phone Input (Có addon +65)
+    .phoneInput {
+      :global {
+        // Chỉnh sửa phần addon (+65) cho khớp chiều cao 44px
+        .ant-input-group-addon {
+          background-color: #f1f5f9;
+          border-color: #e2e8f0;
+          color: #64748b;
+          font-weight: 600;
+          padding: 0 12px;
+        }
+        
+        // Input bên trong
+        .ant-input {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
       }
     }
-    
-    // Nút Verify gắn liền input
-    .verifyBtn {
-      position: relative;
-      left: -5px;
-      z-index: 999;
-        height: 44px;
-        background-color: #0f766e;
-        border: 1px solid #0f766e;
-        border-radius: 0 8px 8px 0;
-        font-weight: 600;
-        &:hover { background-color: #115e59 !important; }
-    }
-
-    .resetBtn {
-      position: relative;
-      left: -5px;
-      z-index: 999;
-        height: 44px;
-        border-radius: 0 8px 8px 0;
-        color: #ef4444;
-        border-color: #e2e8f0;
-        &:hover { border-color: #ef4444; background: #fef2f2; }
-    }
   }
 
+  // Footer chứa nút Cancel và Create
   .footer {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: 12px;
-    padding-top: 24px;
+    padding: 24px;
     border-top: 1px solid #f1f5f9;
+    background-color: #fff; // Đảm bảo nền trắng
 
     .cancelBtn {
       height: 44px;
@@ -116,11 +220,12 @@
       color: #475569;
       border-color: #e2e8f0;
       padding: 0 24px;
-      
+      background: transparent;
+
       &:hover {
-          color: #0f172a;
-          border-color: #cbd5e1;
-          background-color: #fff;
+        color: #0f172a;
+        border-color: #cbd5e1;
+        background-color: #f8fafc;
       }
     }
 
@@ -130,19 +235,25 @@
       font-weight: 600;
       background-color: #0f766e;
       border-color: #0f766e;
-      padding: 0 24px;
+      padding: 0 32px;
       box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.2);
-      
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
       &:hover {
-          background-color: #115e59 !important;
-          border-color: #115e59 !important;
+        background-color: #115e59 !important;
+        border-color: #115e59 !important;
+        transform: translateY(-1px);
+        transition: all 0.2s;
       }
-      
+
       &:disabled {
-          background-color: #e2e8f0 !important;
-          border-color: #e2e8f0 !important;
-          color: #94a3b8 !important;
-          box-shadow: none;
+        background-color: #e2e8f0 !important;
+        border-color: #e2e8f0 !important;
+        color: #94a3b8 !important;
+        box-shadow: none;
+        transform: none;
       }
     }
   }
