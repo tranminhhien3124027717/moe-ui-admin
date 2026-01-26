@@ -134,4 +134,56 @@ export const topupService = {
       };
     }
   },
+
+  // Topup Config Template APIs
+  async getTopupConfigs(params = {}) {
+    try {
+      const url = "topup-configs";
+      const res = await api.get(url, { params });
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        source: "API",
+        message:
+          error.response?.data?.message || "API get topup configs failed",
+        status: error.response?.status,
+        raw: error,
+      };
+    }
+  },
+
+  async createTopupConfig(body) {
+    try {
+      const url = "topup-configs";
+      const res = await api.post(url, body);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        source: "API",
+        message:
+          error.response?.data?.message || "API create topup config failed",
+        status: error.response?.status,
+        raw: error,
+      };
+    }
+  },
+
+  async deleteTopupConfig(id) {
+    try {
+      const url = `topup-configs/${id}`;
+      const res = await api.delete(url);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        source: "API",
+        message:
+          error.response?.data?.message || "API delete topup config failed",
+        status: error.response?.status,
+        raw: error,
+      };
+    }
+  },
 };
