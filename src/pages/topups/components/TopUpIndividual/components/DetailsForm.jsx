@@ -256,7 +256,7 @@ const DetailsForm = ({ accounts, value, onChange, onBack, onNext }) => {
           Back
         </Button>
         <Button type="primary" onClick={handleContinue} disabled={!isFormValid}>
-          Continue to Preview
+          Continue & Preview
         </Button>
       </div>
     </>

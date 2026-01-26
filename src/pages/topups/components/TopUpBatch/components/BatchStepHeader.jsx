@@ -6,7 +6,7 @@ const BatchStepHeader = ({ step }) => {
       <div className={styles.progress} data-step={step} />
       <div className={styles.labels}>
         <span className={step >= 1 ? styles.active : ""}>Setup</span>
-        <span className={step >= 2 ? styles.active : ""}>Review</span>
+        <span className={step >= 2 ? styles.active : ""}>Preview</span>
       </div>
     </div>
   );
