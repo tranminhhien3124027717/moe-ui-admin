@@ -105,11 +105,11 @@ const AddCourseForm = ({
         <Form form={form} layout="vertical" className={styles.courseForm}>
             
             {/* Basic Info */}
-            <Form.Item label="Course Name" name="courseName" rules={[{ required: true }]}>
+            <Form.Item label="Course Name" name="courseName" rules={[{ required: true, message: 'Please enter course name' }]}>
                 <Input placeholder="e.g., Python Programming"  />
             </Form.Item>
 
-            <Form.Item label="Provider" name="provider" rules={[{ required: true }]}>
+            <Form.Item label="Provider" name="provider" rules={[{ required: true, message: 'Please select a provider' }]}>
                 <Select
                     showSearch
                     placeholder="Search provider"
@@ -123,7 +123,7 @@ const AddCourseForm = ({
                 />
             </Form.Item>
 
-            <Form.Item label="Education Level" name="educationLevel" rules={[{ required: true }]}>
+            <Form.Item label="Education Level" name="educationLevel" rules={[{ required: true, message: 'Please select an education level' }]}>
                 <Select
                     placeholder={selectedProvider ? "Select level" : "Select provider first"}
                     options={levels.map(sl => ({ label: sl.name, value: sl.id }))}
@@ -136,10 +136,10 @@ const AddCourseForm = ({
             </Form.Item>
 
             <div style={{ display: 'flex', gap: '16px' }}>
-                <Form.Item label="Mode" name="mode" rules={[{ required: true }]} style={{ flex: 1 }}>
+                <Form.Item label="Mode" name="mode" rules={[{ required: true, message: 'Please select a mode' }]} style={{ flex: 1 }}>
                     <Select options={MODE_OPTIONS} popupClassNames={{ root: styles.selectDropdown }} placeholder="Select mode"  />
                 </Form.Item>
-                <Form.Item label="Status" name="status" rules={[{ required: true }]} style={{ flex: 1 }}>
+                <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Please select a status' }]} style={{ flex: 1 }}>
                     <Select options={[{ label: 'Active', value: 'Active' }, { label: 'Inactive', value: 'Inactive' }]} popupClassNames={{ root: styles.selectDropdown }}  />
                 </Form.Item>
             </div>
@@ -149,10 +149,9 @@ const AddCourseForm = ({
                 <Form.Item 
                     label="Start Date" 
                     name="startDate" 
-                    rules={[{ required: true }, { validator: validateFutureDate }]} 
+                    rules={[{ required: true, message: 'Please select start date' }, { validator: validateFutureDate }]} 
                     style={{ flex: 1 }}
-                    validateStatus={startDateError ? 'error' : ''} 
-                    help={startDateError} 
+                    {...(startDateError && { validateStatus: 'error', help: startDateError })}
                     className={styles.dateField}
                 >
                     <DatePicker 
@@ -175,8 +174,7 @@ const AddCourseForm = ({
                             { validator: validateEndDate(form) } 
                         ]}
                     style={{ flex: 1 }}
-                    validateStatus={endDateError ? 'error' : ''} 
-                    help={endDateError} 
+                    {...(endDateError && { validateStatus: 'error', help: endDateError })}
                     className={styles.dateField}
                 >
                     <DatePicker 
@@ -202,13 +200,13 @@ const AddCourseForm = ({
                     )}
                 </div>
 
-                <Form.Item label="Payment Type" name="paymentOption" rules={[{ required: true }]}>
+                <Form.Item label="Payment Type" name="paymentOption" rules={[{ required: true, message: 'Please select a payment type' }]}>
                     <Select options={PAYMENT_OPTIONS} disabled={!startDate || !endDate} popupClassNames={{ root: styles.selectDropdown }}  />
                 </Form.Item>
 
                 {paymentOption === 'Recurring' && (
                     <>
-                        <Form.Item label="Billing Cycle" name="billingCycle" rules={[{ required: true }]}>
+                        <Form.Item label="Billing Cycle" name="billingCycle" rules={[{ required: true, message: 'Please select a billing cycle' }]}>
                             <Select 
                                 popupClassNames={{ root: styles.selectDropdown }}
                                 options={BILLING_CYCLE_OPTIONS.map(opt => ({
@@ -223,10 +221,10 @@ const AddCourseForm = ({
                         
                         {/* Billing Date & Due */}
                         <div className={styles.dateRow}>
-                            <Form.Item label="Billing Date" name="billingDate" rules={[{ required: true }]} className={styles.dateField}>
+                            <Form.Item label="Billing Date" name="billingDate" rules={[{ required: true, message: 'Please select a billing date' }]} className={styles.dateField}>
                                 <Select options={getBillingDateOptions()} popupClassNames={{ root: styles.selectDropdown }}  />
                             </Form.Item>
-                            <Form.Item label="Payment Due" name="paymentDue" rules={[{ required: true }]} className={styles.dateField}>
+                            <Form.Item label="Payment Due" name="paymentDue" rules={[{ required: true, message: 'Please select payment due' }]} className={styles.dateField}>
                                 <Select options={PAYMENT_DUE_OPTIONS} popupClassNames={{ root: styles.selectDropdown }}  />
                             </Form.Item>
                         </div>
@@ -236,7 +234,7 @@ const AddCourseForm = ({
                                 <Form.Item 
                                     label="Total Course Fee" 
                                     name="fee" 
-                                    rules={[{ required: true }, { validator: validateIntegerFee }]}
+                                    rules={[{ required: true, message: 'Please enter total course fee' }, { validator: validateIntegerFee }]}
                                 >
                                     <Input 
                                         type="text" 
@@ -265,7 +263,7 @@ const AddCourseForm = ({
                         <Form.Item 
                             label="Course Fee" 
                             name="fee" 
-                            rules={[{ required: true }, { validator: validateIntegerFee }]}
+                            rules={[{ required: true, message: 'Please enter course fee' }, { validator: validateIntegerFee }]}
                         >
                             <Input 
                                 type="text"
@@ -277,10 +275,10 @@ const AddCourseForm = ({
                             />
                         </Form.Item>
                         <div className={styles.dateRow}>
-                            <Form.Item label="Billing Date" name="billingDate" rules={[{ required: true }]} className={styles.dateField}>
+                            <Form.Item label="Billing Date" name="billingDate" rules={[{ required: true, message: 'Please select a billing date' }]} className={styles.dateField}>
                                 <Select options={getBillingDateOptions()} popupClassNames={{ root: styles.selectDropdown }}  />
                             </Form.Item>
-                            <Form.Item label="Payment Due" name="paymentDue" rules={[{ required: true }]} className={styles.dateField}>
+                            <Form.Item label="Payment Due" name="paymentDue" rules={[{ required: true, message: 'Please select payment due' }]} className={styles.dateField}>
                                 <Select options={PAYMENT_DUE_OPTIONS} popupClassNames={{ root: styles.selectDropdown }}  />
                             </Form.Item>
                         </div>
