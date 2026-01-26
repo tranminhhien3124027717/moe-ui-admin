@@ -7,8 +7,14 @@ import {
   InputNumber,
   Divider,
   message,
+  Dropdown,
+  Button,
+  Modal,
+  Tag,
+  Spin,
 } from "antd";
 import { useState, useEffect } from "react";
+import { DownOutlined, DeleteOutlined, FileTextOutlined, SearchOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -19,16 +25,101 @@ dayjs.extend(timezone);
 import styles from "../TopUpBatch.module.scss";
 import { useCustomizeFilters } from "./../../../../../hooks/topups/useCustomizeFilters";
 import { formatEnumLabel } from "../../../../../utils/formatters";
+import { useTopupConfigs } from "../../../../../hooks/topups/useTopupConfigs";
+import { useDebounce } from "../../../../../hooks/useDebounce";
+
+// Education level ID to name mapping
+const EDUCATION_LEVEL_MAP = {
+  "EL-001": "Primary",
+  "EL-002": "Secondary",
+  "EL-003": "Post-Secondary",
+  "EL-004": "Tertiary",
+  "EL-005": "Post-Graduate",
+  "EL-006": "Not Set",
+};
+
+// Schooling status ID to name mapping
+const SCHOOLING_STATUS_MAP = {
+  "SS-001": "In School",
+  "SS-002": "Not In School",
+};
+
+// Helper function to format currency for template display
+const formatTemplateCurrency = (value) => {
+  if (value === null || value === undefined || value === 0) return null;
+  return `S$${parseFloat(value).toLocaleString("en-US")}`;
+};
+
+// Helper function to format age range for template display
+const formatTemplateAgeRange = (minAge, maxAge) => {
+  const hasMin = minAge !== undefined && minAge !== null && minAge !== 0;
+  const hasMax = maxAge !== undefined && maxAge !== null && maxAge !== 0;
+
+  if (!hasMin && !hasMax) return null;
+  if (hasMin && !hasMax) return `Above ${minAge} years old`;
+  if (!hasMin && hasMax) return `Under ${maxAge} years old`;
+  if (minAge === maxAge) return `${maxAge} years old`;
+  return `${minAge} – ${maxAge} years old`;
+};
+
+// Helper function to format balance range for template display
+const formatTemplateBalanceRange = (minBalance, maxBalance) => {
+  const hasMin = minBalance !== undefined && minBalance !== null && minBalance !== 0;
+  const hasMax = maxBalance !== undefined && maxBalance !== null && maxBalance !== 0;
+
+  if (!hasMin && !hasMax) return null;
+  if (hasMin && !hasMax) return `Above ${formatTemplateCurrency(minBalance)}`;
+  if (!hasMin && hasMax) return `Under ${formatTemplateCurrency(maxBalance)}`;
+  if (minBalance === maxBalance) return formatTemplateCurrency(maxBalance);
+  return `${formatTemplateCurrency(minBalance)} – ${formatTemplateCurrency(maxBalance)}`;
+};
+
+// Helper function to format education levels for template display - returns array of names
+const formatTemplateEducationLevelsArray = (educationLevelsStr) => {
+  if (!educationLevelsStr) return [];
+  const ids = educationLevelsStr.split(",").map((id) => id.trim()).filter(Boolean);
+  if (ids.length === 0) return [];
+  return ids.map((id) => EDUCATION_LEVEL_MAP[id] || id);
+};
+
+// Helper function to format schooling status for template display
+const formatTemplateSchoolingStatus = (schoolingStatusStr) => {
+  if (!schoolingStatusStr) return null;
+  return SCHOOLING_STATUS_MAP[schoolingStatusStr.trim()] || schoolingStatusStr;
+};
+
+// Helper to check if schooling status is "In School"
+const isInSchool = (schoolingStatusStr) => {
+  if (!schoolingStatusStr) return false;
+  return schoolingStatusStr.trim() === "SS-001";
+};
 
 const BatchForm = ({ value, onChange }) => {
   const [scheduleDate, setScheduleDate] = useState(null);
   const [scheduleTime, setScheduleTime] = useState(null);
-
-  // const [schoolingStatus, setSchoolingStatus] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
+  
+  // Template states
+  const [templateDropdownOpen, setTemplateDropdownOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [applyModalVisible, setApplyModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [templateToDelete, setTemplateToDelete] = useState(null);
+  const [templateSearchTerm, setTemplateSearchTerm] = useState("");
+  
+  // Debounce search term
+  const debouncedSearchTerm = useDebounce(templateSearchTerm, 300);
 
   // Fetch customize filters (education levels and schooling statuses)
   const { educationLevels, schoolingStatuses } = useCustomizeFilters();
+  
+  // Fetch topup configs (templates)
+  const { configs: templates, loading: templatesLoading, fetchConfigs, deleteConfig } = useTopupConfigs();
+  
+  // Fetch templates on mount and when search term changes
+  useEffect(() => {
+    fetchConfigs(debouncedSearchTerm);
+  }, [fetchConfigs, debouncedSearchTerm]);
 
   // Store educationLevels and schoolingStatuses in parent state when loaded
   useEffect(() => {
@@ -203,8 +294,190 @@ const BatchForm = ({ value, onChange }) => {
     }
   };
 
+  // Handle template selection - show confirmation modal
+  const handleTemplateSelect = (template) => {
+    setSelectedTemplate(template);
+    setApplyModalVisible(true);
+    setTemplateDropdownOpen(false);
+  };
+
+  // Apply template to form
+  const handleApplyTemplate = () => {
+    if (!selectedTemplate) return;
+
+    // Parse education levels from comma-separated string to array of IDs
+    const educationStatusIds = selectedTemplate.educationLevels
+      ? selectedTemplate.educationLevels.split(",").map((id) => id.trim()).filter(Boolean)
+      : [];
+
+    // Parse schooling status (single value) to array
+    const schoolingStatusIds = selectedTemplate.schoolingStatuses
+      ? [selectedTemplate.schoolingStatuses.trim()]
+      : [];
+
+    // Apply template values to form
+    onChange({
+      ...value,
+      targetAccounts: 1, // Switch to Customized
+      ruleName: selectedTemplate.ruleName || value.ruleName,
+      amount: selectedTemplate.topupAmount ? selectedTemplate.topupAmount.toString() : value.amount,
+      remark: selectedTemplate.internalRemarks || value.remark,
+      minAge: selectedTemplate.minAge || "",
+      maxAge: selectedTemplate.maxAge || "",
+      minBalance: selectedTemplate.minBalance || "",
+      maxBalance: selectedTemplate.maxBalance || "",
+      educationStatus: educationStatusIds,
+      SchoolingStatuses: schoolingStatusIds,
+    });
+
+    setApplyModalVisible(false);
+    setSelectedTemplate(null);
+    message.success("Template applied successfully!");
+  };
+
+  // Handle delete template click
+  const handleDeleteClick = (e, template) => {
+    e.stopPropagation();
+    setTemplateToDelete(template);
+    setDeleteModalVisible(true);
+  };
+
+  // Confirm delete template
+  const handleConfirmDelete = async () => {
+    if (!templateToDelete) return;
+    try {
+      await deleteConfig(templateToDelete.id);
+      setDeleteModalVisible(false);
+      setTemplateToDelete(null);
+    } catch (error) {
+      // Error already handled in hook
+    }
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setTemplateSearchTerm(e.target.value);
+  };
+
+  // Build template dropdown content
+  const templateDropdownContent = (
+    <div className={styles.templateDropdownContent}>
+      {/* Search Input */}
+      <div className={styles.templateSearchWrapper}>
+        <Input
+          placeholder="Search templates..."
+          prefix={<SearchOutlined style={{ color: "#94a3b8" }} />}
+          value={templateSearchTerm}
+          onChange={handleSearchChange}
+          onClick={(e) => e.stopPropagation()}
+          allowClear
+          className={styles.templateSearchInput}
+        />
+      </div>
+      
+      {/* Template List */}
+      <div className={styles.templateList}>
+        {templatesLoading ? (
+          <div className={styles.templateLoadingWrapper}>
+            <Spin size="small" />
+            <span>Loading templates...</span>
+          </div>
+        ) : templates.length > 0 ? (
+          templates.map((template) => (
+            <div
+              key={template.id}
+              className={styles.templateMenuItem}
+              onClick={() => handleTemplateSelect(template)}
+            >
+              {/* Header with Name and Delete Button */}
+              <div className={styles.templateItemHeader}>
+                <span className={styles.templateItemName}>{template.ruleName}</span>
+                <Button
+                  type="text"
+                  size="small"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={(e) => handleDeleteClick(e, template)}
+                  className={styles.templateDeleteBtn}
+                />
+              </div>
+              
+              {/* Two Column Layout */}
+              <div className={styles.templateItemBody}>
+                {/* Left Column */}
+                <div className={styles.templateItemLeft}>
+                  {template.internalRemarks && (
+                    <div className={styles.templateItemSubtext}>
+                      <span className={styles.templateSubLabel}>Internal Remark:</span>{" "}
+                      {template.internalRemarks.length > 40
+                        ? `${template.internalRemarks.substring(0, 40)}...`
+                        : template.internalRemarks}
+                    </div>
+                  )}
+                  {formatTemplateCurrency(template.topupAmount) && (
+                    <div className={styles.templateItemSubtext}>
+                      <span className={styles.templateSubLabel}>Amount per Account:</span>{" "}
+                      {formatTemplateCurrency(template.topupAmount)}
+                    </div>
+                  )}
+                  {formatTemplateSchoolingStatus(template.schoolingStatuses) && (
+                    <div className={styles.templateSchoolingStatus}>
+                      <Tag color={isInSchool(template.schoolingStatuses) ? "green" : "default"}>
+                        {formatTemplateSchoolingStatus(template.schoolingStatuses)}
+                      </Tag>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Right Column - Badges */}
+                <div className={styles.templateItemRight}>
+                  {formatTemplateAgeRange(template.minAge, template.maxAge) && (
+                    <Tag color="blue">{formatTemplateAgeRange(template.minAge, template.maxAge)}</Tag>
+                  )}
+                  {formatTemplateBalanceRange(template.minBalance, template.maxBalance) && (
+                    <Tag color="purple">{formatTemplateBalanceRange(template.minBalance, template.maxBalance)}</Tag>
+                  )}
+                </div>
+              </div>
+              
+              {/* Bottom Row - Education Levels */}
+              {formatTemplateEducationLevelsArray(template.educationLevels).length > 0 && (
+                <div className={styles.templateItemEducation}>
+                  {formatTemplateEducationLevelsArray(template.educationLevels).map((level, index) => (
+                    <Tag key={index} color="orange">{level}</Tag>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <div className={styles.templateEmptyMessage}>
+            {templateSearchTerm ? "No templates found" : "No templates available"}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <>
+      {/* Template Button */}
+      <div className={styles.templateButtonWrapper}>
+        <Dropdown
+          dropdownRender={() => templateDropdownContent}
+          trigger={["click"]}
+          open={templateDropdownOpen}
+          onOpenChange={setTemplateDropdownOpen}
+          overlayClassName={styles.templateDropdown}
+        >
+          <Button icon={<FileTextOutlined />} className={styles.templateButton}>
+            Top-up Template {templatesLoading ? <Spin size="small" /> : <DownOutlined />}
+          </Button>
+        </Dropdown>
+      </div>
+
+      <Divider style={{ margin: "12px 0" }} />
+
       {/* Rule Name */}
       <div className={styles.formGroup}>
         <label className={styles.formLabel}>
@@ -475,6 +748,49 @@ const BatchForm = ({ value, onChange }) => {
           </div>
         </div>
       )}
+
+      {/* Apply Template Confirmation Modal */}
+      <Modal
+        title="Apply Template"
+        open={applyModalVisible}
+        onOk={handleApplyTemplate}
+        onCancel={() => {
+          setApplyModalVisible(false);
+          setSelectedTemplate(null);
+        }}
+        okText="Apply"
+        cancelText="Cancel"
+        centered
+      >
+        <p>
+          Are you sure you want to apply the template <strong>"{selectedTemplate?.ruleName}"</strong> to the current batch top-up?
+        </p>
+        <p style={{ color: "#64748b", fontSize: "13px" }}>
+          This will switch to Customized targeting and fill in the template values. You can still modify the values after applying.
+        </p>
+      </Modal>
+
+      {/* Delete Template Confirmation Modal */}
+      <Modal
+        title="Delete Template"
+        open={deleteModalVisible}
+        onOk={handleConfirmDelete}
+        onCancel={() => {
+          setDeleteModalVisible(false);
+          setTemplateToDelete(null);
+        }}
+        okText="Delete"
+        okButtonProps={{ danger: true }}
+        cancelText="Cancel"
+        centered
+      >
+        <p>
+          Are you sure you want to delete the template <strong>"{templateToDelete?.ruleName}"</strong>?
+        </p>
+        <p style={{ color: "#ef4444", fontSize: "13px" }}>
+          This action cannot be undone.
+        </p>
+      </Modal>
     </>
   );
 };
