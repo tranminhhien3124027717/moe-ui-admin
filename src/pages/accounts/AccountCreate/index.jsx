@@ -239,6 +239,7 @@ const AccountCreate = ({ open, onClose }) => {
                 addonBefore="+65"
                 placeholder="8XXXXXXX"
                 disabled={!isVerify}
+                className={styles.phoneInput}
               />
             </Form.Item>
           </Col>
@@ -299,7 +300,7 @@ const AccountCreate = ({ open, onClose }) => {
             loading={loading}
             disabled={!isVerify}
           >
-            Create Account
+            Add Account
           </Button>
         </div>
       </Form>

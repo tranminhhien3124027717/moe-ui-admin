@@ -153,7 +153,7 @@ const StudentCourseDetail = () => {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
-            render: (amount) => <span style={{ fontWeight: 600 }}>${formatCurrency(amount)}</span>
+            render: (amount) => <span style={{ fontWeight: 600 }}>S${formatCurrency(amount)}</span>
         },
         {
             title: 'Payment Method',
@@ -231,8 +231,8 @@ const StudentCourseDetail = () => {
                             <DollarOutlined style={{ color: '#0284c7', fontSize: 24 }} />
                         </div>
                         <div className={styles.statDetails}>
-                            <div className={styles.statLabel}>Total Charged</div>
-                            <div className={styles.statValue}>${formatCurrency(paymentSummary.totalCharged)}</div>
+                            <div className={styles.statLabel}>Total Fee</div>
+                            <div className={styles.statValue}>S${formatCurrency(course.totalFee)}</div>
                         </div>
                     </div>
                 </Card>
@@ -243,7 +243,7 @@ const StudentCourseDetail = () => {
                         </div>
                         <div className={styles.statDetails}>
                             <div className={styles.statLabel}>Total Paid</div>
-                            <div className={styles.statValue} style={{ color: '#66b30e' }}>${formatCurrency(paymentSummary.totalPaid)}</div>
+                            <div className={styles.statValue} style={{ color: '#66b30e' }}>S${formatCurrency(paymentSummary.totalPaid)}</div>
                         </div>
                     </div>
                 </Card>
@@ -254,7 +254,7 @@ const StudentCourseDetail = () => {
                         </div>
                         <div className={styles.statDetails}>
                             <div className={styles.statLabel}>Outstanding</div>
-                            <div className={styles.statValue} style={{ color: '#f59e0b' }}>${formatCurrency(paymentSummary.outstanding)}</div>
+                            <div className={styles.statValue} style={{ color: '#f59e0b' }}>S${formatCurrency(paymentSummary.outstanding)}</div>
                         </div>
                     </div>
                 </Card>
@@ -360,7 +360,7 @@ const StudentCourseDetail = () => {
                         <div>
                             <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>Fee per Cycle</div>
                             <div style={{ fontWeight: 500, color: '#0f172a' }}>
-                                ${formatCurrency(course.feePerCycle)} / {getBillingCycleLabel(course.billingCycle)}
+                                S${formatCurrency(course.feePerCycle)} / {getBillingCycleLabel(course.billingCycle)}
                             </div>
                         </div>
                     </div>

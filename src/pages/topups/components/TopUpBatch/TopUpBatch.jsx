@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, message, Modal } from "antd";
+import { Button, message } from "antd";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -7,7 +7,7 @@ import BatchStepHeader from "./components/BatchStepHeader";
 import BatchForm from "./components/BatchForm";
 import BatchPreview from "./components/BatchPreview";
 import { useAllAccountsList, useFilterBatchList } from "../../../../hooks/topups/useFilteredAccounts";
-import { useTopupConfigs } from "../../../../hooks/topups/useTopupConfigs";
+
 import styles from "./TopUpBatch.module.scss";
 
 dayjs.extend(utc);
@@ -35,18 +35,11 @@ const TopUpBatch = ({ onSubmit, onClose, loading }) => {
     schoolingStatuses: [],
   });
 
-  // Template save state
-  const [templateSaved, setTemplateSaved] = useState(false);
-  const [unsavedWarningModalOpen, setUnsavedWarningModalOpen] = useState(false);
-
   // Use the new hook for fetching all accounts when "Everyone" is selected
   const { total: allAccountsTotal } = useAllAccountsList();
   
   // Use the hook for fetching filtered accounts when "Customized" is selected
   const { data: filteredAccounts, total: filteredTotal, fetchData: fetchFilteredAccounts, loading: filterLoading } = useFilterBatchList();
-
-  // Use the hook for saving template
-  const { createConfig, loading: saveTemplateLoading } = useTopupConfigs();
 
   const hasAnyFilterValue = (value) => {
   return (
@@ -89,72 +82,6 @@ const TopUpBatch = ({ onSubmit, onClose, loading }) => {
 
   const handleBack = () => {
     setStep(1);
-  };
-
-  // Build template config payload from form data
-  const buildTemplatePayload = () => {
-    // Join education status IDs with comma
-    const educationLevelsStr = formData.educationStatus?.length > 0
-      ? formData.educationStatus.join(", ")
-      : "";
-
-    // Get first schooling status (only one allowed)
-    const schoolingStatusStr = formData.SchoolingStatuses?.length > 0
-      ? formData.SchoolingStatuses[0]
-      : "";
-
-    return {
-      id: "", // Backend will generate
-      ruleName: formData.ruleName || "",
-      topupAmount: parseFloat(formData.amount) || 0,
-      minAge: formData.minAge || 0,
-      maxAge: formData.maxAge || 0,
-      minBalance: formData.minBalance || 0,
-      maxBalance: formData.maxBalance || 0,
-      educationLevels: educationLevelsStr,
-      schoolingStatuses: schoolingStatusStr,
-      internalRemarks: formData.remark || "",
-    };
-  };
-
-  // Handle save template
-  const handleSaveTemplate = async () => {
-    try {
-      const payload = buildTemplatePayload();
-      await createConfig(payload);
-      setTemplateSaved(true);
-    } catch (error) {
-      // Error already handled in hook
-    }
-  };
-
-  // Handle submit with unsaved template check
-  const handleSubmitClick = () => {
-    // Only show warning if customized targeting and template not saved
-    if (formData.targetAccounts === 1 && !templateSaved) {
-      setUnsavedWarningModalOpen(true);
-      return;
-    }
-    handleSubmit();
-  };
-
-  // Handle save and submit
-  const handleSaveAndSubmit = async () => {
-    try {
-      const payload = buildTemplatePayload();
-      await createConfig(payload);
-      setTemplateSaved(true);
-      setUnsavedWarningModalOpen(false);
-      handleSubmit();
-    } catch (error) {
-      // Error already handled in hook
-    }
-  };
-
-  // Handle submit without saving
-  const handleSubmitWithoutSave = () => {
-    setUnsavedWarningModalOpen(false);
-    handleSubmit();
   };
 
   const handleSubmit = () => {
@@ -257,9 +184,6 @@ const TopUpBatch = ({ onSubmit, onClose, loading }) => {
               eligibleAccounts={filteredAccounts}
               educationLevels={formData.educationLevels}
               schoolingStatuses={formData.schoolingStatuses}
-              templateSaved={templateSaved}
-              onSaveTemplate={handleSaveTemplate}
-              saveTemplateLoading={saveTemplateLoading}
             />
           )}
         </div>
@@ -276,55 +200,14 @@ const TopUpBatch = ({ onSubmit, onClose, loading }) => {
           )}
           <Button
             type="primary"
-            onClick={step === 1 ? handleNext : handleSubmitClick}
-            disabled={(step === 1 && !isFormValid()) || loading || filterLoading || saveTemplateLoading}
+            onClick={step === 1 ? handleNext : handleSubmit}
+            disabled={(step === 1 && !isFormValid()) || loading || filterLoading}
             loading={(step === 1 && filterLoading) || (step === 2 && loading)}
           >
             {step === 1 ? "Continue & Preview" : "Confirm & Submit"}
           </Button>
         </div>
       </div>
-
-      {/* Unsaved Template Warning Modal */}
-      <Modal
-        title="Save Template Before Submitting?"
-        open={unsavedWarningModalOpen}
-        footer={null}
-        onCancel={() => setUnsavedWarningModalOpen(false)}
-        width={480}
-        centered
-      >
-        <div className={styles.unsavedModalContent}>
-          <p className={styles.unsavedModalMessage}>
-            You haven't saved your top-up configuration as a template. Would you like to save it for future use?
-          </p>
-          <div className={styles.unsavedModalButtons}>
-            <Button
-              type="primary"
-              onClick={handleSaveAndSubmit}
-              loading={saveTemplateLoading}
-              block
-            >
-              Save Template & Submit
-            </Button>
-            <Button
-              onClick={handleSubmitWithoutSave}
-              disabled={saveTemplateLoading}
-              block
-            >
-              Submit Without Saving
-            </Button>
-            <Button
-              type="default"
-              onClick={() => setUnsavedWarningModalOpen(false)}
-              disabled={saveTemplateLoading}
-              block
-            >
-              Back to Preview
-            </Button>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 };

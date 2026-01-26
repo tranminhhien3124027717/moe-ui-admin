@@ -124,6 +124,23 @@ export const formatDateTime = (datetime) => {
   }
 };
 
+export const formatCurrency2 = (amount, options = {}) => {
+  if (amount === null || amount === undefined) return '—';
+  
+  const {
+    minimumFractionDigits = 0,
+    maximumFractionDigits = 2,
+    locale = 'en-US'
+  } = options;
+  
+  const formatted = Number(amount).toLocaleString(locale, {
+    minimumFractionDigits,
+    maximumFractionDigits
+  });
+  
+  return `S$${formatted}`;
+};
+
 export const formatEnumLabel = (text = "") => {
   if (!text) return "";
 
