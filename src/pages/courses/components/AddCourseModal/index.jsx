@@ -21,7 +21,7 @@ const AddCourseModal = ({ open, onClose, onAdd }) => {
                 <>
                     <Button onClick={onClose} className={styles.cancelButton}>Cancel</Button>
                     <Button type="primary" onClick={handlers.handleProceedToReview} className={styles.submitButton}>
-                        Review Course <ArrowRightOutlined />
+                        Preview Course <ArrowRightOutlined />
                     </Button>
                 </>
             ) : (
