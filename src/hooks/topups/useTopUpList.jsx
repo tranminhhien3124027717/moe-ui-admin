@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { topupService } from "../../services/topupService";
-import Search from "antd/es/transfer/search";
-
 
 const DEFAULT_FILTER = {
-  pageNumber: 1,
-  pageSize: 10,
+  PageNumber: 1,
+  PageSize: 10,
   Statuses: [],
   Search: null,
   Types: null,
@@ -21,34 +19,53 @@ export const useTopUpList = () => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  
+  // Track the latest request to prevent race conditions
+  const fetchRequestRef = useRef(0);
 
-  const fetchData = async (customFilter = filter) => {
+  const fetchData = useCallback(async (customFilter) => {
+    const filterToUse = customFilter || filter;
+    // Increment request ID to track this specific request
+    const requestId = ++fetchRequestRef.current;
+    
     setLoading(true);
-    setData([]);
     try {
       // Clean up filter - don't send null, empty strings, or empty arrays
       const cleanFilter = {};
-      for (const [key, value] of Object.entries(customFilter)) {
+      for (const [key, value] of Object.entries(filterToUse)) {
         if (value !== null && value !== "" && (Array.isArray(value) ? value.length > 0 : true)) {
           cleanFilter[key] = value;
         }
       }
       
       const result = await topupService.getListTopUps(cleanFilter);
-      console.log(result);
+      
+      // Only update state if this is still the latest request (prevent race condition)
+      if (requestId !== fetchRequestRef.current) {
+        return;
+      }
+      
       // Ensure data is always an array
       const items = result.data?.items || result?.items || result?.data || result || [];
       const totalCount = result.data?.totalCount || result?.totalCount || 0;
+      
       setData(Array.isArray(items) ? items : []);
       setTotal(totalCount);
     } catch (error) {
+      // Only handle error if this is still the latest request
+      if (requestId !== fetchRequestRef.current) {
+        return;
+      }
       console.error("Failed to fetch top up list:", error);
       setData([]);
       setTotal(0);
     } finally {
-      setLoading(false);
+      // Only update loading if this is still the latest request
+      if (requestId === fetchRequestRef.current) {
+        setLoading(false);
+      }
     }
-  };
+  }, [filter]);
 
   useEffect(() => {
     fetchData(filter);
@@ -56,20 +73,18 @@ export const useTopUpList = () => {
 
   // 🔹 update filter
   const updateFilter = (newFilter) => {
-    setData([]);
     setFilter((prev) => ({
       ...prev,
       ...newFilter,
-      pageNumber: 1,
+      PageNumber: 1,
     }));
   };
 
   const changePage = (page, pageSize) => {
-    setData([]);
     setFilter((prev) => ({
       ...prev,
-      pageNumber: page,
-      pageSize,
+      PageNumber: page,
+      PageSize: pageSize,
     }));
   };
 
@@ -83,23 +98,21 @@ export const useTopUpList = () => {
       'scheduledTime': 'ScheduledTime',
       'createdDate': 'CreatedDate'
     };
-    setData([]);
 
     setFilter((prev) => ({
       ...prev,
       SortBy: field ? sortByMap[field] : null,
       SortDescending: order === 'descend',
-      pageNumber: 1,
+      PageNumber: 1,
     }));
   };
 
   const resetAndFetch = () => {
-    setData([]);
     setFilter({
       ...DEFAULT_FILTER,
       SortBy: 'CreatedDate',
       SortDescending: true,
-      pageNumber: 1,
+      PageNumber: 1,
     });
   };
 
@@ -108,6 +121,9 @@ export const useTopUpList = () => {
     total,
     loading,
     filter,
+    // Expose with lowercase for component compatibility
+    pageNumber: filter.PageNumber,
+    pageSize: filter.PageSize,
     updateFilter,
     changePage,
     updateSort,
