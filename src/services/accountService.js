@@ -19,10 +19,10 @@ export const accountService = {
     }
   },
 
-  async getAccountById(id, params) {
+  async getAccountById(id) {
     try {
       const url = `account-holders/${id}`;
-      const res = await api.get(url, { params });
+      const res = await api.get(url);
       return res;
     } catch (error) {
       console.log(error);
@@ -30,6 +30,74 @@ export const accountService = {
         source: "API",
         message:
           error.response?.data?.message || "API get account by id failed",
+        status: error.response?.status,
+        raw: error,
+      };
+    }
+  },
+
+  async getEnrolledCourses(accountHolderId, params) {
+    try {
+      const url = `account-holders/${accountHolderId}/enrolled-courses`;
+      const res = await api.get(url, { params });
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        source: "API",
+        message:
+          error.response?.data?.message || "API get enrolled courses failed",
+        status: error.response?.status,
+        raw: error,
+      };
+    }
+  },
+
+  async getOutstandingFees(accountHolderId, params) {
+    try {
+      const url = `account-holders/${accountHolderId}/outstanding-fees`;
+      const res = await api.get(url, { params });
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        source: "API",
+        message:
+          error.response?.data?.message || "API get outstanding fees failed",
+        status: error.response?.status,
+        raw: error,
+      };
+    }
+  },
+
+  async getTopUpHistory(accountHolderId, params) {
+    try {
+      const url = `account-holders/${accountHolderId}/topup-history`;
+      const res = await api.get(url, { params });
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        source: "API",
+        message:
+          error.response?.data?.message || "API get topup history failed",
+        status: error.response?.status,
+        raw: error,
+      };
+    }
+  },
+
+  async getPaymentHistory(accountHolderId, params) {
+    try {
+      const url = `account-holders/${accountHolderId}/payment-history`;
+      const res = await api.get(url, { params });
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        source: "API",
+        message:
+          error.response?.data?.message || "API get payment history failed",
         status: error.response?.status,
         raw: error,
       };

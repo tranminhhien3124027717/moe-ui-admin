@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Spin, Alert, message } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -7,7 +7,6 @@ import {
   CreditCardOutlined,
   WalletOutlined
 } from "@ant-design/icons";
-import { useAccounts } from "../../../hooks/accounts/useAccount";
 import { accountService } from "../../../services/accountService";
 import AccountDetailHeader from "./components/AccountDetailHeader";
 import AccountStats from "./components/AccountStats";
@@ -21,28 +20,156 @@ import styles from "./AccountDetail.module.scss";
 const AccountDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { loading, error, accountInfo, getAccountByID } = useAccounts();
+  
+  // Account detail state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [accountInfo, setAccountInfo] = useState(null);
+
+  // Enrolled courses state
+  const [enrolledCoursesData, setEnrolledCoursesData] = useState([]);
+  const [enrolledCoursesTotal, setEnrolledCoursesTotal] = useState(0);
+  const [enrolledCoursesLoading, setEnrolledCoursesLoading] = useState(false);
+  const [enrolledCoursesParams, setEnrolledCoursesParams] = useState({ pageNumber: 1, pageSize: 5 });
+
+  // Outstanding fees state
+  const [outstandingFeesData, setOutstandingFeesData] = useState([]);
+  const [outstandingFeesTotal, setOutstandingFeesTotal] = useState(0);
+  const [outstandingFeesLoading, setOutstandingFeesLoading] = useState(false);
+  const [outstandingFeesParams, setOutstandingFeesParams] = useState({ pageNumber: 1, pageSize: 5 });
+
+  // Top-up history state
+  const [topUpHistoryData, setTopUpHistoryData] = useState([]);
+  const [topUpHistoryTotal, setTopUpHistoryTotal] = useState(0);
+  const [topUpHistoryLoading, setTopUpHistoryLoading] = useState(false);
+  const [topUpParams, setTopUpParams] = useState({ pageNumber: 1, pageSize: 5 });
+
+  // Payment history state
+  const [paymentHistoryData, setPaymentHistoryData] = useState([]);
+  const [paymentHistoryTotal, setPaymentHistoryTotal] = useState(0);
+  const [paymentHistoryLoading, setPaymentHistoryLoading] = useState(false);
+  const [paymentParams, setPaymentParams] = useState({ pageNumber: 1, pageSize: 5 });
+
+  // Modal states
   const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false);
   const [isDeactivating, setIsDeactivating] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isActivating, setIsActivating] = useState(false);
-  const [enrolledParams, setEnrolledParams] = useState({ page: 1, size: 5 });
-  const [outstandingParams, setOutstandingParams] = useState({ page: 1, size: 5 });
-  const [topUpParams, setTopUpParams] = useState({ page: 1, size: 5 });
-  const [paymentParams, setPaymentParams] = useState({ page: 1, size: 5 });
 
+  // Fetch account detail
+  const fetchAccountDetail = useCallback(async () => {
+    if (!id) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await accountService.getAccountById(id);
+      setAccountInfo(res.data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  // Fetch enrolled courses
+  const fetchEnrolledCourses = useCallback(async () => {
+    if (!id) return;
+    setEnrolledCoursesLoading(true);
+    try {
+      const res = await accountService.getEnrolledCourses(id, enrolledCoursesParams);
+      setEnrolledCoursesData(res.data?.items || []);
+      setEnrolledCoursesTotal(res.data?.totalCount || 0);
+    } catch (err) {
+      console.error('Failed to fetch enrolled courses:', err);
+    } finally {
+      setEnrolledCoursesLoading(false);
+    }
+  }, [id, enrolledCoursesParams]);
+
+  // Fetch outstanding fees
+  const fetchOutstandingFees = useCallback(async () => {
+    if (!id) return;
+    setOutstandingFeesLoading(true);
+    try {
+      const res = await accountService.getOutstandingFees(id, outstandingFeesParams);
+      setOutstandingFeesData(res.data?.items || []);
+      setOutstandingFeesTotal(res.data?.totalCount || 0);
+    } catch (err) {
+      console.error('Failed to fetch outstanding fees:', err);
+    } finally {
+      setOutstandingFeesLoading(false);
+    }
+  }, [id, outstandingFeesParams]);
+
+  // Fetch top-up history
+  const fetchTopUpHistory = useCallback(async () => {
+    if (!id) return;
+    setTopUpHistoryLoading(true);
+    try {
+      const res = await accountService.getTopUpHistory(id, topUpParams);
+      setTopUpHistoryData(res.data?.items || []);
+      setTopUpHistoryTotal(res.data?.totalCount || 0);
+    } catch (err) {
+      console.error('Failed to fetch top-up history:', err);
+    } finally {
+      setTopUpHistoryLoading(false);
+    }
+  }, [id, topUpParams]);
+
+  // Fetch payment history
+  const fetchPaymentHistory = useCallback(async () => {
+    if (!id) return;
+    setPaymentHistoryLoading(true);
+    try {
+      const res = await accountService.getPaymentHistory(id, paymentParams);
+      setPaymentHistoryData(res.data?.items || []);
+      setPaymentHistoryTotal(res.data?.totalCount || 0);
+    } catch (err) {
+      console.error('Failed to fetch payment history:', err);
+    } finally {
+      setPaymentHistoryLoading(false);
+    }
+  }, [id, paymentParams]);
+
+  // Initial load - fetch all data in parallel
   useEffect(() => {
     if (id) {
-      getAccountByID(id, {
-        topUpPageNumber: topUpParams.page,
-        topUpSize: topUpParams.size,
-        paymentPage: paymentParams.page,
-        paymentSize: paymentParams.size
-      });
+      fetchAccountDetail();
+      fetchEnrolledCourses();
+      fetchOutstandingFees();
+      fetchTopUpHistory();
+      fetchPaymentHistory();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, topUpParams, paymentParams]);
+  }, [id]);
+
+  // Fetch enrolled courses when params change
+  useEffect(() => {
+    if (id && enrolledCoursesParams.pageNumber > 0) {
+      fetchEnrolledCourses();
+    }
+  }, [enrolledCoursesParams]);
+
+  // Fetch outstanding fees when params change
+  useEffect(() => {
+    if (id && outstandingFeesParams.pageNumber > 0) {
+      fetchOutstandingFees();
+    }
+  }, [outstandingFeesParams]);
+
+  // Fetch top-up history when params change
+  useEffect(() => {
+    if (id && topUpParams.pageNumber > 0) {
+      fetchTopUpHistory();
+    }
+  }, [topUpParams]);
+
+  // Fetch payment history when params change
+  useEffect(() => {
+    if (id && paymentParams.pageNumber > 0) {
+      fetchPaymentHistory();
+    }
+  }, [paymentParams]);
 
   const handleDeactivateClick = () => {
     setIsDeactivateModalOpen(true);
@@ -53,12 +180,7 @@ const AccountDetail = () => {
     try {
       await accountService.activateAccount(id);
       message.success('Account activated successfully');
-      await getAccountByID(id, {
-        topUpPage: topUpParams.page,
-        topUpSize: topUpParams.size,
-        paymentPage: paymentParams.page,
-        paymentSize: paymentParams.size
-      });
+      await fetchAccountDetail();
     } catch (error) {
       console.error('Failed to activate account:', error);
       message.error(error.message || 'Failed to activate account');
@@ -72,12 +194,7 @@ const AccountDetail = () => {
     try {
       await accountService.deactivateAccount(id);
       message.success('Account deactivated successfully');
-      await getAccountByID(id, {
-        topUpPage: topUpParams.page,
-        topUpSize: topUpParams.size,
-        paymentPage: paymentParams.page,
-        paymentSize: paymentParams.size
-      });
+      await fetchAccountDetail();
       setIsDeactivateModalOpen(false);
     } catch (error) {
       console.error('Failed to deactivate account:', error);
@@ -104,12 +221,7 @@ const AccountDetail = () => {
     try {
       await accountService.updateAccount(id, values);
       message.success('Account updated successfully');
-      await getAccountByID(id, {
-        topUpPage: topUpParams.page,
-        topUpSize: topUpParams.size,
-        paymentPage: paymentParams.page,
-        paymentSize: paymentParams.size
-      });
+      await fetchAccountDetail();
       setIsEditModalOpen(false);
     } catch (error) {
       console.error('Failed to update account:', error);
@@ -135,10 +247,6 @@ const AccountDetail = () => {
   if (!accountInfo) return null;
 
   const student = accountInfo.studentInformation || {};
-  const enrolledCoursesData = accountInfo.enrolledCourses || [];
-  const outstandingFeesData = accountInfo.outstandingFeesDetails || [];
-  const topUpHistoryData = accountInfo.topUpHistory?.items || [];
-  const paymentHistoryData = accountInfo.paymentHistory?.items || [];
 
   // Column definitions
   const enrolledColumns = [
@@ -220,15 +328,15 @@ const AccountDetail = () => {
           columns={enrolledColumns}
           dataSource={enrolledCoursesData}
           rowKey={(r) => r.courseName + r.enrollmentDate}
+          loading={enrolledCoursesLoading}
           pagination={{
-            current: enrolledParams.page,
-            pageSize: enrolledParams.size,
-            total: enrolledCoursesData.length,
+            current: enrolledCoursesParams.pageNumber,
+            pageSize: enrolledCoursesParams.pageSize,
+            total: enrolledCoursesTotal,
             showSizeChanger: true,
-            pageSizeOptions: ['5', '10', '20'],
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
             position: ['bottomLeft'],
-            onChange: (page, size) => setEnrolledParams({ page, size })
+            onChange: (page, size) => setEnrolledCoursesParams({ pageNumber: page, pageSize: size })
           }}
         />
         <ConfigurableTable
@@ -237,15 +345,15 @@ const AccountDetail = () => {
           columns={feesColumns}
           dataSource={outstandingFeesData}
           rowKey={(r) => r.courseName + r.dueDate}
+          loading={outstandingFeesLoading}
           pagination={{
-            current: outstandingParams.page,
-            pageSize: outstandingParams.size,
-            total: outstandingFeesData.length,
+            current: outstandingFeesParams.pageNumber,
+            pageSize: outstandingFeesParams.pageSize,
+            total: outstandingFeesTotal,
             showSizeChanger: true,
-            pageSizeOptions: ['5', '10', '20'],
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
             position: ['bottomLeft'],
-            onChange: (page, size) => setOutstandingParams({ page, size })
+            onChange: (page, size) => setOutstandingFeesParams({ pageNumber: page, pageSize: size })
           }}
         />
         <ConfigurableTable
@@ -254,15 +362,15 @@ const AccountDetail = () => {
           columns={topUpColumns}
           dataSource={topUpHistoryData}
           rowKey={(r) => r.topUpDate + r.topUpTime}
+          loading={topUpHistoryLoading}
           pagination={{
-            current: topUpParams.page,
-            pageSize: topUpParams.size,
-            total: accountInfo.topUpHistory?.totalCount || 0,
+            current: topUpParams.pageNumber,
+            pageSize: topUpParams.pageSize,
+            total: topUpHistoryTotal,
             showSizeChanger: true,
-            pageSizeOptions: ['5', '10', '20'],
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
             position: ['bottomLeft'],
-            onChange: (page, size) => setTopUpParams({ page, size })
+            onChange: (page, size) => setTopUpParams({ pageNumber: page, pageSize: size })
           }}
         />
         <ConfigurableTable
@@ -271,15 +379,15 @@ const AccountDetail = () => {
           columns={paymentHistoryColumns}
           dataSource={paymentHistoryData}
           rowKey={(r) => r.paymentDate + r.courseName}
+          loading={paymentHistoryLoading}
           pagination={{
-            current: paymentParams.page,
-            pageSize: paymentParams.size,
-            total: accountInfo.paymentHistory?.totalCount || 0,
+            current: paymentParams.pageNumber,
+            pageSize: paymentParams.pageSize,
+            total: paymentHistoryTotal,
             showSizeChanger: true,
-            pageSizeOptions: ['5', '10', '20'],
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
             position: ['bottomLeft'],
-            onChange: (page, size) => setPaymentParams({ page, size })
+            onChange: (page, size) => setPaymentParams({ pageNumber: page, pageSize: size })
           }}
         />
       </div>
