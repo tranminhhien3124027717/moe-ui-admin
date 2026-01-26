@@ -1,7 +1,6 @@
 // components/BatchPreview.jsx
-import { Divider, Button, Tooltip, Modal } from "antd";
+import { Divider, Tooltip } from "antd";
 import { useState } from "react";
-import { SaveOutlined } from "@ant-design/icons";
 import EligibleAccountsModal from "./EligibleAccountsModal";
 import styles from "../TopUpBatch.module.scss";
 import { useAllAccountsList } from "../../../../../hooks/topups/useFilteredAccounts";
@@ -32,12 +31,8 @@ const BatchPreview = ({
   eligibleAccounts = [], 
   educationLevels = [], 
   schoolingStatuses = [],
-  templateSaved = false,
-  onSaveTemplate,
-  saveTemplateLoading = false,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [saveConfirmModalOpen, setSaveConfirmModalOpen] = useState(false);
   const totalAmount = parseFloat(data.amount || 0) * matchingAccounts;
 
   // Use hook for all accounts when "Everyone" is selected
@@ -128,20 +123,6 @@ const BatchPreview = ({
           {data.targetAccounts === 1 && (
             <>
               <Divider style={{ margin: "12px 0" }} />
-              
-              {/* Save Template Button */}
-              <div className={styles.saveTemplateWrapper}>
-                <Button
-                  icon={<SaveOutlined />}
-                  className={styles.saveTemplateButton}
-                  disabled={templateSaved}
-                  loading={saveTemplateLoading}
-                  onClick={() => setSaveConfirmModalOpen(true)}
-                >
-                  {templateSaved ? "Template Saved" : "Save as Template"}
-                </Button>
-              </div>
-
               <div className={styles.rulesSection}>
                 <div className={styles.rulesTitle}>Top-up Rules</div>
                 <div className={styles.criteriaItem}>
@@ -278,29 +259,6 @@ const BatchPreview = ({
         onClose={() => setModalOpen(false)}
         accounts={accountsToShow}
       />
-
-      {/* Save Template Confirmation Modal */}
-      <Modal
-        title="Save as Template"
-        open={saveConfirmModalOpen}
-        onOk={() => {
-          setSaveConfirmModalOpen(false);
-          if (onSaveTemplate) {
-            onSaveTemplate();
-          }
-        }}
-        onCancel={() => setSaveConfirmModalOpen(false)}
-        okText="Save Template"
-        cancelText="Cancel"
-        centered
-      >
-        <p>
-          Are you sure you want to save the current top-up configuration as a template?
-        </p>
-        <p style={{ color: "#64748b", fontSize: "13px" }}>
-          This template will include Rule Name, Amount, Age Range, Balance Range, Education Status, Schooling Status, and Internal Remark.
-        </p>
-      </Modal>
     </>
   );
 };
