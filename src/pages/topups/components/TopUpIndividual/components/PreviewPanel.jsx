@@ -36,7 +36,7 @@ const PreviewPanel = ({ accounts, data, onBack, onSubmit, loading }) => {
     }
     if (data.scheduledDateTime) {
       const scheduled = dayjs(data.scheduledDateTime);
-      return `Scheduled: ${scheduled.format('YYYY-MM-DD')} at ${scheduled.format('HH:mm')}`;
+      return `Scheduled: ${scheduled.format('DD/MM/YYYY')} at ${scheduled.format('HH:mm')}`;
     }
     return "-";
   };

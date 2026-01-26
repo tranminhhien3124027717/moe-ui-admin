@@ -1,5 +1,5 @@
 // components/BatchPreview.jsx
-import { Divider, Tooltip } from "antd";
+import { Divider, Tooltip, Button } from "antd";
 import { useState } from "react";
 import EligibleAccountsModal from "./EligibleAccountsModal";
 import styles from "../TopUpBatch.module.scss";
@@ -9,27 +9,28 @@ import { formatEnumLabel } from "../../../../../utils/formatters";
 // Truncated text component with "read more" tooltip
 const TruncatedText = ({ text, maxLength = 50 }) => {
   if (!text || text === "-" || text === "---") return text || "-";
-  
+
   if (text.length <= maxLength) {
     return text;
   }
-  
+
   const truncated = text.substring(0, maxLength) + "...";
-  
+
   return (
     <Tooltip title={text} placement="topLeft">
       <span style={{ cursor: "pointer" }}>
-        {truncated} <span style={{ color: "#1890ff", fontSize: "12px" }}>read more</span>
+        {truncated}{" "}
+        <span style={{ color: "#1890ff", fontSize: "12px" }}>read more</span>
       </span>
     </Tooltip>
   );
 };
 
-const BatchPreview = ({ 
-  data, 
-  matchingAccounts = 0, 
-  eligibleAccounts = [], 
-  educationLevels = [], 
+const BatchPreview = ({
+  data,
+  matchingAccounts = 0,
+  eligibleAccounts = [],
+  educationLevels = [],
   schoolingStatuses = [],
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -39,7 +40,8 @@ const BatchPreview = ({
   const { data: allAccounts } = useAllAccountsList();
 
   // Determine which accounts to show in modal - use passed eligibleAccounts for customized
-  const accountsToShow = data.targetAccounts === 0 ? allAccounts : eligibleAccounts;
+  const accountsToShow =
+    data.targetAccounts === 0 ? allAccounts : eligibleAccounts;
 
   const formatCurrency = (value) => {
     if (value === null || value === undefined) return "S$0";
@@ -74,8 +76,8 @@ const BatchPreview = ({
   const getEducationLevel = () => {
     if (!data.educationStatus || data.educationStatus.length === 0) return "-";
     return data.educationStatus
-      .map(id => {
-        const level = educationLevels.find(item => item.id === id);
+      .map((id) => {
+        const level = educationLevels.find((item) => item.id === id);
         return level ? formatEnumLabel(level.name) : null;
       })
       .filter(Boolean)
@@ -86,11 +88,10 @@ const BatchPreview = ({
   const getSchoolingStatus = () => {
     if (!data.SchoolingStatuses || data.SchoolingStatuses.length === 0)
       return "-";
-    return data.SchoolingStatuses
-      .map(id => {
-        const status = schoolingStatuses.find(item => item.id === id);
-        return status ? formatEnumLabel(status.name) : null;
-      })
+    return data.SchoolingStatuses.map((id) => {
+      const status = schoolingStatuses.find((item) => item.id === id);
+      return status ? formatEnumLabel(status.name) : null;
+    })
       .filter(Boolean)
       .join(", ");
   };
@@ -195,20 +196,22 @@ const BatchPreview = ({
             </span>
           </div>
 
-          <div className={styles.previewSummaryRow}>
-            <span className={styles.previewLabel}>Targeting</span>
-            <span className={styles.previewValue}>
-              {data.targetAccounts === 0 ? "Everyone" : "Customized"}
-            </span>
-          </div>
+          {data.targetAccounts === 0 && (
+            <div className={styles.previewSummaryRow}>
+              <span className={styles.previewLabel}>Targeting</span>
+              <span className={styles.previewValue}>
+                {data.targetAccounts === 0
+                  ? "All Education Accounts"
+                  : "Customized"}
+              </span>
+            </div>
+          )}
 
           {data.targetAccounts === 1 && (
             <>
               <div className={styles.previewSummaryRow}>
                 <span className={styles.previewLabel}>Eligible Accounts</span>
-                <span className={styles.previewValue}>
-                  {matchingAccounts}
-                </span>
+                <span className={styles.previewValue}>{matchingAccounts}</span>
               </div>
               <div className={styles.viewListButtonWrapper}>
                 <Button
@@ -229,6 +232,15 @@ const BatchPreview = ({
               {formatCurrency(totalAmount)}
             </span>
           </div>
+
+          {data.immediate && (
+            <div className={styles.previewSummaryRow}>
+              <span className={styles.previewLabel}>Execute</span>
+              <span className={styles.previewValue}>
+                {data.immediate ? "Immediate" : "-"}
+              </span>
+            </div>
+          )}
 
           {!data.immediate && (
             <>

@@ -14,6 +14,7 @@ import {
 import { accountService } from '../../../services/accountService';
 import StatusTag from '../../../components/common/StatusTag/StatusTag';
 import styles from './index.module.scss';
+import { formatCurrency2 } from '../../../utils/formatters';
 
 const StudentCourseDetail = () => {
     const { accountHolderId, courseId } = useParams();
@@ -39,7 +40,8 @@ const StudentCourseDetail = () => {
     };
 
     const formatCurrency = (amount) => {
-        return Number(amount || 0).toFixed(2);
+        if (amount === null || amount === undefined) return '-';
+        return `${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     };
 
     const formatDate = (dateString) => {
@@ -115,13 +117,13 @@ const StudentCourseDetail = () => {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
-            render: (amount) => <span style={{ fontWeight: 600 }}>${formatCurrency(amount)}</span>
+            render: (amount) => <span style={{ fontWeight: 600 }}>{formatCurrency2(amount)}</span>
         },
         {
             title: 'Paid',
             dataIndex: 'paid',
             key: 'paid',
-            render: (amount) => <span style={{ fontWeight: 600, color: '#66b30e' }}>${formatCurrency(amount)}</span>
+            render: (amount) => <span style={{ fontWeight: 600, color: '#66b30e' }}>{formatCurrency2(amount)}</span>
         },
         {
             title: 'Status',

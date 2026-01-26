@@ -22,7 +22,7 @@ const AccountDetailHeader = ({ accountInfo, onDeactivate, onActivate, onEdit, is
           icon={<ArrowLeftOutlined />}
           type="text"
           className={styles.backBtn}
-          onClick={() => navigate("/accounts")}
+          onClick={() => navigate(-1)}
         />
         <div>
           <div className={styles.titleRow}>
