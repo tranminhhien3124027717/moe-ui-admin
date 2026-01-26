@@ -373,7 +373,7 @@ const CourseDetail = () => {
         return (
             <div className={styles.emptyContainer}>
                 <Empty description="Course not found" />
-                <Button type="primary" onClick={() => navigate('/courses')} style={{ marginTop: 16 }}>
+                <Button type="primary" onClick={() => navigate(-1)} style={{ marginTop: 16 }}>
                     Back to Courses
                 </Button>
             </div>
