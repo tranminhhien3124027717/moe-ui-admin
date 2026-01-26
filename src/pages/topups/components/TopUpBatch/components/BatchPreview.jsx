@@ -59,8 +59,8 @@ const BatchPreview = ({ data, matchingAccounts = 0, eligibleAccounts = [], educa
     if (!data.minBalance && !data.maxBalance) return "-";
     if (data.minBalance === data.maxBalance)
       return formatCurrency(data.maxBalance);
-    if (!data.minBalance) return formatCurrency(data.maxBalance);
-    if (!data.maxBalance) return formatCurrency(data.minBalance);
+    if (!data.minBalance) return `Under ${formatCurrency(data.maxBalance)}`;
+    if (!data.maxBalance) return `Above ${formatCurrency(data.minBalance)}`;
     return `${formatCurrency(data.minBalance)} – ${formatCurrency(data.maxBalance)}`;
   };
 

@@ -46,10 +46,15 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
     if (minAge === maxAge) {
       return `${maxAge} years`;
     }
-    if (!minAge) return `${maxAge} years`;
-    if (!maxAge) return `${minAge} years`;
+    if (!minAge) return `Above ${maxAge} years old`;
+    if (!maxAge) return `Under ${minAge} years old`;
     return `${minAge} – ${maxAge} years`;
   };
+
+  const formatCurrency = (value) => {
+    if (value === null || value === undefined) return "S$0";
+    return `S$${parseFloat(value).toLocaleString("en-US")}`;
+  };  
 
   // Format balance range
   const getBalanceRange = () => {
@@ -60,10 +65,11 @@ const TopUpDetail = ({ data, onClose, onCancelSuccess }) => {
     if (minBalance === maxBalance) {
       return formatBalance(maxBalance);
     }
-    if (!minBalance) return formatBalance(maxBalance);
-    if (!maxBalance) return formatBalance(minBalance);
+    if (!minBalance) return `Under ${formatCurrency(data.topupRules.maxBalance)}`;
+    if (!maxBalance) return `Above ${formatCurrency(data.topupRules.minBalance)}`;
     return `${formatBalance(minBalance)} – ${formatBalance(maxBalance)}`;
   };
+
 
   // Format education levels
   const getEducationLevel = () => {
