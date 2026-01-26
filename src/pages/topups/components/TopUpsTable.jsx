@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Tag } from "antd";
+import { Table, Tag, Pagination } from "antd";
 import dayjs from "dayjs";
 import StatusTag from "../../../components/common/StatusTag/StatusTag";
 import styles from "./TopUpsTable.module.scss";
@@ -15,11 +15,9 @@ const TopUpsTable = ({
   updateSort,
   onRowClick,
 }) => {
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    // Only update sort when a sort action actually occurs.
-    // Pagination changes also trigger this callback with empty sorter; do not reset page.
-    if (sorter && sorter.columnKey) {
+  const handleTableChange = (_, __, sorter, extra) => {
+    // Only update sort when a sort action actually occurs (not from pagination)
+    if (extra?.action === 'sort' && sorter && sorter.columnKey) {
       updateSort(sorter.columnKey, sorter.order);
     }
   };
@@ -27,7 +25,7 @@ const TopUpsTable = ({
   const isToday = (dateString) => {
     if (!dateString) return false;
     const date = dayjs(dateString);
-    return date.isSame(dayjs(), 'day');
+    return date.isSame(dayjs(), "day");
   };
 
   const getTypeLabel = (type) => {
@@ -40,16 +38,16 @@ const TopUpsTable = ({
 
   const formatAmount = (amount) => {
     if (!amount) return "S$0";
-    return `S$${parseFloat(amount).toLocaleString('en-US')}`;
+    return `S$${parseFloat(amount).toLocaleString("en-US")}`;
   };
 
   const formatDateTime = (dateString) => {
     if (!dateString) return { date: "-", time: "" };
-    
+
     // Parse the UTC date and add 7 hours for UTC+7
-    const dateObj = dayjs(dateString).add(7, 'hour');
+    const dateObj = dayjs(dateString).add(7, "hour");
     if (!dateObj.isValid()) return { date: "-", time: "" };
-    
+
     const date = dateObj.format("DD/MM/YYYY");
     const time = dateObj.format("hh:mm A");
 
@@ -77,7 +75,8 @@ const TopUpsTable = ({
       width: "20%",
       sorter: true,
       render: (_, record) => {
-        const name = record.type === 0 ? record.ruleName : record.targetAccountHolderName;
+        const name =
+          record.type === 0 ? record.ruleName : record.targetAccountHolderName;
         const nric = record.type === 0 ? null : record.targetAccountHolderNric;
         const isNew = isToday(record.createdDate);
 
@@ -85,7 +84,11 @@ const TopUpsTable = ({
           <div className={styles.nameColumn}>
             <div className={styles.nameRow}>
               <span className={styles.colName}>{name || "-"}</span>
-              {isNew && <Tag color="warning" className={styles.newTag}>New</Tag>}
+              {isNew && (
+                <Tag color="warning" className={styles.newTag}>
+                  New
+                </Tag>
+              )}
             </div>
             {nric && <div className={styles.nric}>{nric}</div>}
           </div>
@@ -99,9 +102,7 @@ const TopUpsTable = ({
       width: "12%",
       sorter: true,
       render: (amount) => (
-        <span className={styles.colAmount}>
-          {formatAmount(amount) || "-"}
-        </span>
+        <span className={styles.colAmount}>{formatAmount(amount) || "-"}</span>
       ),
     },
     {
@@ -156,7 +157,7 @@ const TopUpsTable = ({
       <div className={styles.paginationWrapper}>
         <span className={styles.rowPerPageLabel}>Row per page:</span>
         <select
-          value={filter.pageSize}
+          value={filter.PageSize}
           onChange={(e) => changePage(1, parseInt(e.target.value))}
           className={styles.rowPerPageSelect}
         >
@@ -171,15 +172,8 @@ const TopUpsTable = ({
         dataSource={data}
         loading={loading}
         scroll={{ x: 1200 }}
-        pagination={{
-          current: filter.pageNumber,
-          pageSize: filter.pageSize,
-          total,
-          onChange: changePage,
-          showSizeChanger: false,
-          position: ['bottomRight'],
-        }}
-        rowKey={(record) => record.id || record.key}
+        pagination={false}
+        rowKey={(record, index) => `${filter.PageNumber}-${record.id}-${index}`}
         onRow={(record) => ({
           onClick: () => onRowClick?.(record),
           style: { cursor: "pointer" },
@@ -187,6 +181,17 @@ const TopUpsTable = ({
         onChange={handleTableChange}
         className={styles.customTable}
       />
+
+      <div className={styles.paginationBottom}>
+        <Pagination
+          current={filter.PageNumber}
+          pageSize={filter.PageSize}
+          total={total}
+          onChange={(page, pageSize) => changePage(page, pageSize)}
+          showSizeChanger={false}
+          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+        />
+      </div>
     </div>
   );
 };
