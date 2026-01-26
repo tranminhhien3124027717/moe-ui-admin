@@ -27,18 +27,21 @@ const AccountDetail = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isActivating, setIsActivating] = useState(false);
+  const [enrolledParams, setEnrolledParams] = useState({ page: 1, size: 5 });
+  const [outstandingParams, setOutstandingParams] = useState({ page: 1, size: 5 });
   const [topUpParams, setTopUpParams] = useState({ page: 1, size: 5 });
   const [paymentParams, setPaymentParams] = useState({ page: 1, size: 5 });
 
   useEffect(() => {
     if (id) {
       getAccountByID(id, {
-        topUpPage: topUpParams.page,
+        topUpPageNumber: topUpParams.page,
         topUpSize: topUpParams.size,
         paymentPage: paymentParams.page,
         paymentSize: paymentParams.size
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, topUpParams, paymentParams]);
 
   const handleDeactivateClick = () => {
@@ -217,6 +220,16 @@ const AccountDetail = () => {
           columns={enrolledColumns}
           dataSource={enrolledCoursesData}
           rowKey={(r) => r.courseName + r.enrollmentDate}
+          pagination={{
+            current: enrolledParams.page,
+            pageSize: enrolledParams.size,
+            total: enrolledCoursesData.length,
+            showSizeChanger: true,
+            pageSizeOptions: ['5', '10', '20'],
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+            position: ['bottomLeft'],
+            onChange: (page, size) => setEnrolledParams({ page, size })
+          }}
         />
         <ConfigurableTable
           title="Outstanding Fees"
@@ -224,6 +237,16 @@ const AccountDetail = () => {
           columns={feesColumns}
           dataSource={outstandingFeesData}
           rowKey={(r) => r.courseName + r.dueDate}
+          pagination={{
+            current: outstandingParams.page,
+            pageSize: outstandingParams.size,
+            total: outstandingFeesData.length,
+            showSizeChanger: true,
+            pageSizeOptions: ['5', '10', '20'],
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+            position: ['bottomLeft'],
+            onChange: (page, size) => setOutstandingParams({ page, size })
+          }}
         />
         <ConfigurableTable
           title="Top Up History"
@@ -236,11 +259,10 @@ const AccountDetail = () => {
             pageSize: topUpParams.size,
             total: accountInfo.topUpHistory?.totalCount || 0,
             showSizeChanger: true,
+            pageSizeOptions: ['5', '10', '20'],
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
             position: ['bottomLeft'],
-            onChange: (page, size) => setTopUpParams(prev => ({ ...prev, page, size }))
-          }}
-          onChange={(pagination) => {
+            onChange: (page, size) => setTopUpParams({ page, size })
           }}
         />
         <ConfigurableTable
@@ -254,9 +276,10 @@ const AccountDetail = () => {
             pageSize: paymentParams.size,
             total: accountInfo.paymentHistory?.totalCount || 0,
             showSizeChanger: true,
+            pageSizeOptions: ['5', '10', '20'],
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
             position: ['bottomLeft'],
-            onChange: (page, size) => setPaymentParams(prev => ({ ...prev, page, size }))
+            onChange: (page, size) => setPaymentParams({ page, size })
           }}
         />
       </div>

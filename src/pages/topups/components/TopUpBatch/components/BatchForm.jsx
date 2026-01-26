@@ -8,7 +8,7 @@ import {
   Divider,
   message,
 } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -24,13 +24,19 @@ const BatchForm = ({ value, onChange }) => {
   const [scheduleDate, setScheduleDate] = useState(null);
   const [scheduleTime, setScheduleTime] = useState(null);
   const [validationErrors, setValidationErrors] = useState({});
+  const filtersInitializedRef = useRef(false);
 
   // Fetch customize filters (education levels and schooling statuses)
   const { educationLevels, schoolingStatuses } = useCustomizeFilters();
 
-  // Store educationLevels and schoolingStatuses in parent state when loaded
+  // Store educationLevels and schoolingStatuses in parent state when loaded (only once)
   useEffect(() => {
-    if (educationLevels?.length > 0 && schoolingStatuses?.length > 0) {
+    if (
+      !filtersInitializedRef.current &&
+      educationLevels?.length > 0 && 
+      schoolingStatuses?.length > 0
+    ) {
+      filtersInitializedRef.current = true;
       onChange({
         ...value,
         educationLevels: educationLevels,

@@ -201,7 +201,11 @@ const TopUpBatch = ({ onSubmit, onClose, loading }) => {
           <Button
             type="primary"
             onClick={step === 1 ? handleNext : handleSubmit}
-            disabled={(step === 1 && !isFormValid()) || loading || filterLoading}
+            disabled={
+              (step === 1 && !isFormValid()) || 
+              (step === 2 && (effectiveEligibleCount === 0 || loading)) || 
+              filterLoading
+            }
             loading={(step === 1 && filterLoading) || (step === 2 && loading)}
           >
             {step === 1 ? "Continue & Preview" : "Confirm & Submit"}
