@@ -9,7 +9,8 @@ import {
     BankOutlined,
     CalendarOutlined,
     ClockCircleOutlined,
-    CheckCircleOutlined
+    CheckCircleOutlined,
+    CreditCardOutlined
 } from '@ant-design/icons';
 import { accountService } from '../../../services/accountService';
 import StatusTag from '../../../components/common/StatusTag/StatusTag';
@@ -354,6 +355,29 @@ const StudentCourseDetail = () => {
                         <div>
                             <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>Enrolled Since</div>
                             <div style={{ fontWeight: 500, color: '#0f172a' }}>{formatDate(enrollment.enrollmentDate)}</div>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                        <CalendarOutlined style={{ fontSize: '20px', color: '#64748b', marginTop: '2px' }} />
+                        <div>
+                            <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>Billing Date</div>
+                            <div style={{ fontWeight: 500, color: '#0f172a' }}>
+                                {course.billingDate
+                                    ? `${course.billingDate}${course.billingDate === 1 ? 'st' : course.billingDate === 2 ? 'nd' : course.billingDate === 3 ? 'rd' : 'th'} of the month`
+                                    : '-'
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                        <CreditCardOutlined style={{ fontSize: '20px', color: '#64748b', marginTop: '2px' }} />
+                        <div>
+                            <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>Payment Due</div>
+                            <div style={{ fontWeight: 500, color: '#0f172a' }}>
+                                {course.paymentDue ? `${course.paymentDue} days after billing` : '-'}
+                            </div>
                         </div>
                     </div>
 

@@ -8,13 +8,12 @@ import styles from "./AccountManage.module.scss";
 
 const AccountManage = () => {
   const [openCreate, setOpenCreate] = useState(false);
-  const [showInactive, setShowInactive] = useState(false);
   const { loading, data, total, filter, updateFilter, changePage, updateSort, fetchData } = useAccountList();
 
+  const showInactive = filter.IsActive === false;
+
   const handleToggleInactive = () => {
-    const newShowInactive = !showInactive;
-    setShowInactive(newShowInactive);
-    updateFilter({ IsActive: !newShowInactive });
+    updateFilter({ IsActive: showInactive });
   };
 
   const handleAddAccount = () => {
