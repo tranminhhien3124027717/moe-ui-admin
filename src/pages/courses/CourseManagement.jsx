@@ -53,6 +53,7 @@ const CourseManagement = () => {
     const handleTableChange = (pagination, filters, sorter) => {
         if (pagination.current !== filter.PageNumber || pagination.pageSize !== filter.PageSize) {
             changePage(pagination.current, pagination.pageSize);
+            return;
         }
 
         if (sorter.field) {

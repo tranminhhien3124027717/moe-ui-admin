@@ -37,8 +37,8 @@ const parseUrlToFilter = (searchParams) => {
  if (searchParams.get('endDate')) filter.EndDate = dayjs(searchParams.get('endDate'));
  if (searchParams.get('minFee')) filter.TotalFeeMin = parseFloat(searchParams.get('minFee'));
  if (searchParams.get('maxFee')) filter.TotalFeeMax = parseFloat(searchParams.get('maxFee'));
- if (searchParams.get('sortBy')) filter.SortBy = parseInt(searchParams.get('sortBy')) || 0;
- if (searchParams.get('sortDir')) filter.SortDirection = parseInt(searchParams.get('sortDir')) || 1;
+ if (searchParams.has('sortBy')) filter.SortBy = parseInt(searchParams.get('sortBy'), 10);
+ if (searchParams.has('sortDir')) filter.SortDirection = parseInt(searchParams.get('sortDir'), 10);
   return filter;
 };
 
