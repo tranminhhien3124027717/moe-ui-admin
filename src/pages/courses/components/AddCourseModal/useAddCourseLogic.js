@@ -80,7 +80,7 @@ export const useAddCourseLogic = (open, onAdd, onClose) => {
     const fetchProviders = async (search = '') => {
         setLoadingData(prev => ({ ...prev, providers: true }));
         try {
-            const res = await courseService.getProviders(search);
+            const res = await courseService.getActiveProviders(search);
             setProvidersList(res?.data || []);
         } catch {
             messageApi.error('Failed to load providers');
