@@ -55,15 +55,15 @@ $font-family: 'Inter', sans-serif;
      - Hidden on mobile/tablet devices (< 992px).
      -------------------------------------------------------------------------- */
   .leftPanel {
-    width: 55%; 
-    flex: 0 0 55%; 
+    width: 60%; 
+    flex: 0 0 60%; 
     position: relative;
     background-image: url('../../assets/images/Image.png'); 
     background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: flex-end; 
 
     @media (max-width: 992px) {
       display: none; // Hide on smaller screens
@@ -100,7 +100,9 @@ $font-family: 'Inter', sans-serif;
           font-size: 14px;
           text-transform: uppercase;
           letter-spacing: 1px;
-          color: #e2e8f0;
+          color: #39bef7;
+          font-weight: 700;
+          border-radius: 50px;
         }
 
         .heroTitle {
