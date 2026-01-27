@@ -9,11 +9,12 @@ const { Title, Text } = Typography;
 const AccountDetailHeader = ({ accountInfo, onDeactivate, onActivate, onEdit, isActivating }) => {
   const navigate = useNavigate();
   
-  // Determine account type based on schooling status
-  const isStudentAccount = accountInfo.studentInformation?.schoolingStatus === "InSchool";
-  const accountTypeLabel = isStudentAccount ? "Education Account" : "Student Account";
-  const accountTypeColor = isStudentAccount ? "#9333ea" : "#0ea5e9";
-  const accountTypeBgColor = isStudentAccount ? "#f3e8ff" : "#e0f2fe";
+  // Determine account type based on residential status (Singapore Citizen = Education Account, others = Student Account)
+  const residentialStatus = accountInfo.studentInformation?.residentialStatus;
+  const isSingaporeCitizen = residentialStatus === 'SingaporeCitizen' || residentialStatus === 'Singapore Citizen';
+  const accountTypeLabel = isSingaporeCitizen ? "Education Account" : "Student Account";
+  const accountTypeColor = isSingaporeCitizen ? "#9333ea" : "#0ea5e9";
+  const accountTypeBgColor = isSingaporeCitizen ? "#f3e8ff" : "#e0f2fe";
 
   return (
     <div className={styles.header}>
