@@ -32,17 +32,21 @@ export const getCourseDurationMonths = (start, end) => {
 
 // Helper: Calculate number of billing cycles
 export const calculateCycles = (start, end, cycle) => {
-    if (!start || !end) return 1;
-    const monthsDiff = getCourseDurationMonths(start, end);
-    if (monthsDiff <= 0) return 1;
+        if (!start || !end) return 1;
+        const startDate = dayjs(start);
+        const endDate = dayjs(end);
+        // Count calendar months touched (regardless of day)
+        const monthsDiff = (endDate.year() - startDate.year()) * 12 + (endDate.month() - startDate.month()) + 1;
 
-    switch (cycle) {
-        case 'Monthly': return Math.ceil(monthsDiff);
-        case 'Quarterly': return Math.ceil(monthsDiff / 3);
-        case 'Biannually': return Math.ceil(monthsDiff / 6);
-        case 'Yearly': return Math.ceil(monthsDiff / 12);
-        default: return 1;
-    }
+        if (monthsDiff <= 0) return 1;
+
+        switch (cycle) {
+            case 'Monthly': return monthsDiff;
+            case 'Quarterly': return Math.ceil(monthsDiff / 3);
+            case 'Biannually': return Math.ceil(monthsDiff / 6);
+            case 'Yearly': return Math.ceil(monthsDiff / 12);
+            default: return 1;
+        }
 };
 
 // Helper: Check if a billing cycle is valid for the duration

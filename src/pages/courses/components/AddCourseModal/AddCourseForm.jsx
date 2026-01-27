@@ -249,7 +249,7 @@ const AddCourseForm = ({
                                     <div className={styles.feeSummary}>
                                         <CheckCircleOutlined style={{ color: '#00b96b' }} />
                                         <span style={{ marginLeft: 8 }}>
-                                            Fee per Cycle: <b>${(parseFloat(fee) / calculateCycles(startDate, endDate, billingCycle)).toFixed(2)}</b>
+                                            Fee per Cycle: <b>${(parseFloat(fee) / calculateCycles(startDate, endDate, billingCycle)).toFixed(2)}</b> ({calculateCycles(startDate, endDate, billingCycle) == 1 ? '1 cycle' : `${calculateCycles(startDate, endDate, billingCycle)} cycles`})
                                         </span>
                                     </div>
                                 )}
