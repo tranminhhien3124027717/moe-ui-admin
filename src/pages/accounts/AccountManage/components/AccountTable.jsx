@@ -9,11 +9,12 @@ const AccountTable = ({ data, loading, filter, total, changePage, updateSort }) 
   const navigate = useNavigate();
 
   const handleTableChange = (pagination, filters, sorter) => {
-    if (sorter.columnKey) {
-      updateSort(sorter.columnKey, sorter.order);
-    } else {
-      updateSort(null, null);
-    }
+    const sortByMap = {
+      'fullName': 'FullName',
+      'age': 'Age',
+      'educationLevel': 'EducationLevel',
+      'created': 'CreatedDate',
+    };
   };
 
   const columns = [
