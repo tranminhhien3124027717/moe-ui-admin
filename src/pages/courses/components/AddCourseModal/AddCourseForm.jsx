@@ -105,7 +105,7 @@ const AddCourseForm = ({
         <Form form={form} layout="vertical" className={styles.courseForm}>
             
             {/* Basic Info */}
-            <Form.Item label="Course Name" name="courseName" rules={[{ required: true, message: 'Please enter course name' }]}>
+            <Form.Item label="Course Name" name="courseName" rules={[{ required: true, message: 'Please enter course name' }, { max: 200, message: 'Course name cannot exceed 200 characters' }, {min: 5, message: 'Course name must be at least 5 characters'}]}>
                 <Input placeholder="e.g., Python Programming"  />
             </Form.Item>
 
