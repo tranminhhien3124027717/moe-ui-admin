@@ -396,7 +396,7 @@ const CourseDetail = () => {
                 <div className={styles.headerLeft}>
                     <Button
                         icon={<ArrowLeftOutlined />}
-                        onClick={() => navigate('/courses')}
+                        onClick={() => navigate(-1)}
                         type="text"
                         className={styles.backBtn}
                     />
