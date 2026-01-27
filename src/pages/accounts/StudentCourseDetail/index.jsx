@@ -183,7 +183,7 @@ const StudentCourseDetail = () => {
         return (
             <div className={styles.emptyContainer}>
                 <Empty description={error || "Course details not found"} />
-                <Button type="primary" onClick={() => navigate(`/accounts/${accountHolderId}`)} style={{ marginTop: 16 }}>
+                <Button type="primary" onClick={() => navigate(-1)} style={{ marginTop: 16 }}>
                     <ArrowLeftOutlined /> Back to Student
                 </Button>
             </div>
@@ -206,7 +206,7 @@ const StudentCourseDetail = () => {
                 <div className={styles.headerLeft}>
                     <Button
                         icon={<ArrowLeftOutlined />}
-                        onClick={() => navigate(`/accounts/${accountHolderId}`)}
+                        onClick={() => navigate(-1)}
                         type="text"
                         className={styles.backBtn}
                     />
